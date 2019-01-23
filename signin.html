@@ -101,7 +101,7 @@
                 <div class="row">
                     <div class="user input col s10 offset-s1 intro">
                         <h6>Sign In <i class="material-icons left">account_box</i></h6>
-                        <input class="validate" placeholder="Name/Username (required)" id="name" name="name" type="text"
+                        <input class="validate" placeholder="Name/Username (required)" id="username" name="username" type="text"
                             style="color: white" required />
                         <input class="validate" placeholder="Password (required)" id="password" name="password" type="password"
                             style="color: white" required="required" />
@@ -157,7 +157,7 @@
             $(".sidenav").sidenav();
             // Getting references to our submit button inputs
             var loginButton = $("#submit");
-            var nameInput = $("#name");
+            var usernameInput = $("#username");
             var passwordInput = $("#password");
 
             // When the input is submitted, we validate there's an name and age entered
@@ -166,24 +166,24 @@
 
                 event.preventDefault();
                 var userData = {
-                    name: nameInput.val().trim(),
+                    username: usernameInput.val().trim(),
                     password: passwordInput.val().trim()
                 };
 
-                if (!userData.password || !userData.name) {
+                if (!userData.password || !userData.username) {
                     return;
                 };
 
                 // If we have an email and age we run the loginUser function and clear the input areas
-                loginUser(userData.name, userData.password);
-                nameInput.val("");
+                loginUser(userData.username, userData.password);
+                usernameInput.val("");
                 passwordInput.val("");
             });
 
             // loginUser does a post to our "api/users" route and if successful, redirects us the the home page
-            function loginUser(name, password) {
-                $.post("/api/users", {
-                    name: name,
+            function loginUser(username, password) {
+                $.post("/api/users/signin", {
+                    username: username,
                     password: password
                 }).then(function (data) {
                     window.location.replace(data);

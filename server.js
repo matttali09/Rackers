@@ -37,14 +37,14 @@ passport.deserializeUser(User.deserializeUser());
 
 // create static assets (usually on heroku)
 if (process.env.NODE_ENV === "production") {
-    app.use(express.static("client/build"));
+    app.use(express.static("rackers/build"));
 }
 
 // let express use the required routes.
 app.use(routes)
 
 // Connect to the Mongo DB
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/rackeruserlist");
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/rackeruserlist", { useNewUrlParser: true });
 
 // Start the API server
 app.listen(PORT, function() {

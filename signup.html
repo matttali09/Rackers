@@ -101,11 +101,11 @@
                 <div class="row">
                     <div class="user input col s10 offset-s1 intro">
                         <h6>Create an Account and to Jump into the Action Today!<i class="material-icons left">check_box</i></h6>
-                        <input class="validate" placeholder="Name/Username (required)" id="name" name="name" type="text"
+                        <input class="validate" placeholder="Name/Username (required)" id="username" name="username" type="text"
                             style="color: white" required />
                         <input class="validate" placeholder="Password (required)" id="password" name="password" type="password"
-                            style="color: white" required//> <input class="validate" placeholder="Age (required)" id="age"
-                            name="age" type="text" style="color: white" required="required" />
+                            style="color: white" required//> <input class="validate" placeholder="name (required)" id="name"
+                            name="name" type="text" style="color: white" required="required" />
                         <button class="btn waves-effect waves-light signInBtn" id="createU" type="button" name="action">
                             sign-up <i class="material-icons right">send</i>
                         </button>
@@ -159,37 +159,37 @@
             // Getting references to our form and input
             var signUpForm = $("#createU");
             var passwordInput = $("#password")
+            var usernameInput = $("#username");
             var nameInput = $("#name");
-            var ageInput = $("#age");
 
             // When the signup button is clicked, we validate the name and age are not blank
             signUpForm.on("click", function (event) {
                 console.log("create user button pressed")
                 event.preventDefault();
                 var userData = {
-                    name: nameInput.val().trim().replace(/\s+/g, '-').toLowerCase(),
+                    username: usernameInput.val().trim().replace(/\s+/g, '-').toLowerCase(),
                     password: passwordInput.val().trim(),
-                    age: ageInput.val().trim()
+                    name: nameInput.val().trim()
                 };
 
-                if (!userData.name || !userData.age || !passwordInput) {
+                if (!userData.username || !userData.name || !passwordInput) {
                     return;
                 };
 
-                // If we have an name and age, run the signUpUser function
-                signUpUser(userData.name, userData.password, userData.age);
-                nameInput.val("");
+                // If we have an name and name, run the signUpUser function
+                signUpUser(userData.username, userData.password, userData.name);
+                usernameInput.val("");
                 passwordInput.val("");
-                ageInput.val("");
+                nameInput.val("");
             });
 
             // Does a post to the users route. If successful, we are redirected to the members page
             // Otherwise we log any errors
-            function signUpUser(name, password, age) {
-                $.post("/api/users", {
-                    name: name,
+            function signUpUser(username, password, name) {
+                $.post("/api/users/signup", {
+                    username: username,
                     password: password,
-                    age: age,
+                    name: name,
                 }).then(function (data) {
                     console.log("this ran1")
                     window.location.replace(data);
