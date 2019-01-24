@@ -1,31 +1,82 @@
 const router = require("express").Router();
 const usersController = require("../../controller/usersController");
-const passport = require("passport")
+const passport = require("../../config/passport");
 const User = require('../../models/user');
 
-// Matches with "/api/users" (create a if else in post for signin and signup)
+// Matches with "/api/users" this is for all users in database
 router.route("/")
   .get(usersController.findAll)
 
 
-  // create passport authentication routes with redirects
-  router.post('/signup', function(req, res, next) {
-    console.log('registering user');
-    User.register({username: req.body.username, password: req.body.password}, function(err) {
-      if (err) {
-        console.log('error while user register!', err);
-        return next(err);
-      }
-  
-      console.log('user registered!');
-  
-      res.redirect('/');
-    });
-  });
-  
-  router.post('/signin', passport.authenticate('local'), function(req, res) {
-    res.redirect('/');
-  });
+// Matches with "/api/users/current" check route for current user 
+  router.get('/current', (req, res, next) => {
+    console.log('===== user!!======')
+    console.log(req.user)
+    if (req.user) {
+        res.json({ user: req.user })
+    } else {
+        res.json({ user: null })
+    }
+})
+
+// router route for signup
+router.route("/signup")
+// Matches with "/api/users/signup" send info and authenticate with local strategy
+    .post('/signup', (req, res) => {
+    console.log('user signup');
+    
+
+    const { username, password } = req.body
+    // ADD VALIDATION
+    User.findOne({ username: username }, (err, user) => {
+        if (err) {
+            console.log('User.js post error: ', err)
+        } else if (user) {
+            res.json({
+                error: `Sorry, already a user with the username: ${username}`
+            })
+        }
+        else {
+            const newUser = new User({
+                username: username,
+                password: password
+            })
+            newUser.save((err, savedUser) => {
+                if (err) return res.json(err)
+                res.json(savedUser)
+                console.log("im here")
+            })
+        }
+    })
+})
+
+router.route("/signup")
+// Matches with "api/users/signin" signin route
+    .post( '/signin', function (req, res, next) {
+        console.log('routes/user.js, login, req.body: ');
+        console.log(req.body)
+        next()
+    },
+    passport.authenticate('local'),
+    (req, res) => {
+        console.log('logged in', req.user);
+        var userInfo = {
+            username: req.user.username
+        };
+        res.send(userInfo);
+    }
+)
+
+
+// matches with "api/users/logout" used for current user only in session
+router.post('/logout', (req, res) => {
+    if (req.user) {
+        req.logout()
+        res.send({ msg: 'logging out' })
+    } else {
+        res.send({ msg: 'no user to log out' })
+    }
+})
 
 // Matches with "/api/users/:id"
 router

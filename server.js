@@ -29,12 +29,6 @@ app.use(passport.session());
 //     app.use(express.errorHandler());
 // });
 
-// passport config
-const User = require('./models/user');
-passport.use(new LocalStrategy(User.authenticate()));
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
-
 // create static assets (usually on heroku)
 if (process.env.NODE_ENV === "production") {
     app.use(express.static("rackers/build"));
