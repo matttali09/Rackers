@@ -28,6 +28,7 @@ router.post('/signin', passport.authenticate(
     'local'
 ), (req, res, next) => {
     console.log("login handling bro req = " + JSON.stringify(req.body));
+    console.log("res body = " + res.body)
     // if (err) {
     //     console.log(err)
     //     return next(err)

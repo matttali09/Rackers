@@ -19,7 +19,8 @@ const userSchema = new Schema({
 userSchema.methods = {
   checkPassword: function (inputPassword) {
     console.log("check password ran")
-    return (inputPassword, this.password)
+    
+    return (inputPassword === this.password)
   },
   hashPassword: plainTextPassword => {
     return bcrypt.hashSync(plainTextPassword, 10)
