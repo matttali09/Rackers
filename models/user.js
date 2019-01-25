@@ -6,7 +6,8 @@ const bcrypt = require('bcryptjs');
 
 const userSchema = new Schema({
   username: { type: String, required: true, unique: true },
-  password: { type: Buffer, required: true, unique: false },
+  name: { type: String, required: true, unique: true},
+  password: { type: String, required: true, unique: false },
   age: { type: Number, default: 18 },
   wins: { type: Number, default: 0 },
   losses: { type: Number, default: 0 },
@@ -17,7 +18,8 @@ const userSchema = new Schema({
 // Define schema methods
 userSchema.methods = {
   checkPassword: function (inputPassword) {
-    return bcrypt.compareSync(inputPassword, this.password)
+    console.log("check password ran")
+    return (inputPassword, this.password)
   },
   hashPassword: plainTextPassword => {
     return bcrypt.hashSync(plainTextPassword, 10)
@@ -33,8 +35,9 @@ userSchema.pre('save', function (next) {
   } else {
     
     console.log('models/user.js hashPassword in pre save');
-
     this.password = this.hashPassword(this.password)
+    console.log("this after hash = " + this) 
+
     next()
   }
 })

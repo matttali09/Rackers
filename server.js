@@ -2,7 +2,7 @@
 const express = require("express");
 const session = require("express-session");
 const passport = require("passport");
-const LocalStrategy = require('passport-local').Strategy;
+const MongoStore = require('connect-mongo')(session)
 const mongoose = require("mongoose");
 const routes = require("./routes");
 
@@ -16,7 +16,10 @@ app.use(express.urlencoded({ extended: true}));
 app.use(express.json());
 
 // We need to use sessions to keep track of our user's login status
-app.use(session({ secret: ["keyboard cat", "play chopsticks"], resave: true, saveUninitialized: true }));
+app.use(session({ 
+    secret: ["keyboard cat", "play chopsticks"], 
+    resave: true, 
+    saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 
