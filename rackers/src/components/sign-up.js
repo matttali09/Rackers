@@ -51,11 +51,11 @@ class Signup extends Component {
 			})
 	}
 
-
+	
 	render() {
 		return (
-			<div className="SignupForm">
-				<h4>Sign up</h4>
+			<div className="container mainContent">
+				<h6 className="center text-28"><i class="material-icons">account_box</i> Sign up </h6>
 				<form className="form-horizontal">
 					<div className="form-group">
 						<div className="col-1 col-ml-auto">

@@ -23,6 +23,9 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Static directory
+app.use(express.static("server-assets"));
+
 // development and production errorhandling
 // app.configure('development', function(){
 //     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));

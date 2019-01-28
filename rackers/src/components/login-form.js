@@ -63,8 +63,8 @@ class LoginForm extends Component {
             return <Redirect to={{ pathname: this.state.redirectTo }} />
         } else {
             return (
-                <div>
-                    <h4>Login</h4>
+                <div className="container mainContent">
+                    <h6 className="center text-28"><i class="material-icons">check_box</i> Login</h6>
                     <form className="form-horizontal">
                         <div className="form-group">
                             <div className="col-1 col-ml-auto">

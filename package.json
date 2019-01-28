@@ -1,7 +1,7 @@
 {
   "name": "mern",
   "version": "1.0.0",
-  "description": "",
+  "description": "Full stack MERN Application for gaming platform",
   "main": "server.js",
   "scripts": {
     "start": "if-env NODE_ENV=production && yarn run start:prod || yarn run start:dev",
@@ -26,12 +26,14 @@
     "express": "^4.16.3",
     "express-session": "^1.15.6",
     "if-env": "^1.0.4",
+    "materialize-css": "^1.0.0",
     "mongoose": "^5.4.5",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^5.0.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-materialize": "^2.6.0",
     "react-router-dom": "^4.3.1"
   }
 }

@@ -18,7 +18,8 @@ const userSchema = new Schema({
 // Define schema methods
 userSchema.methods = {
   checkPassword: function (inputPassword) {
-    console.log("check password ran")
+    console.log("check password ran, this before = " + this)
+    console.log("input password = " + inputPassword)
     
     return (inputPassword === this.password)
   },

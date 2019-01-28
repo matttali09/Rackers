@@ -1,20 +1,36 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { Route, Link } from 'react-router-dom'
-import logo from '../logo.svg';
+import M from "materialize-css";
+import "materialize-css/dist/css/materialize.min.css";
 import '../App.css';
+import { Navbar, NavItem, Icon } from 'react-materialize'
 import axios from 'axios'
 
-class Navbar extends Component {
+class Nav extends Component {
     constructor() {
         super()
         this.logout = this.logout.bind(this)
     }
 
+    componentDidMount() {
+        // const options = {
+        //   inDuration: 250,
+        //   outDuration: 200,
+        //   draggable: true
+        // };
+    
+        // M.Sidenav.init(this.Sidenav);
+    
+        // let instance = M.Sidenav.getInstance(this.Sidenav);
+        // instance.open();
+        // console.log(instance.isOpen);
+      }
+
     logout(event) {
         event.preventDefault()
         console.log('logging out')
-        axios.post('/user/logout').then(response => {
+        axios.post('/api/Users/logout').then(response => {
             console.log(response.data)
             if (response.status === 200) {
                 this.props.updateUser({
@@ -33,41 +49,37 @@ class Navbar extends Component {
         console.log(this.props);
 
         return (
-            <div>
-
-                <header className="navbar App-header" id="nav-container">
-                    <div className="col-4 col-mr-auto">
-                        <div id="top-filler"></div>
-                        <img src={logo} className="App-logo" alt="logo" />
-                        <h1 className="App-title">MERN Passport</h1>
-                    </div>
-                    <div className="col-4" >
-                        {loggedIn ? (
-                            <section className="navbar-section">
-                                <Link to="#" className="btn btn-link text-secondary" onClick={this.logout}>
-                                    <span className="text-secondary">logout</span></Link>
-
-                            </section>
-                        ) : (
-                                <section className="navbar-section">
-                                    <Link to="/" className="btn btn-link text-secondary">
-                                        <span className="text-secondary">home</span>
-                                    </Link>
-                                    <Link to="/signin" className="btn btn-link text-secondary">
-                                        <span className="text-secondary">login</span>
-                                    </Link>
-                                    <Link to="/signup" className="btn btn-link">
-                                        <span className="text-secondary">sign up</span>
-                                    </Link>
-                                </section>
-                            )}
-                    </div>
-                </header>
-            </div>
-
+            <header className="App-header" id="nav-container">
+                <Navbar>
+                    {/* if logged in show this on navbar :else */}
+                    {loggedIn ? (
+                        <>
+                            <NavItem href="/" className="brand">
+                                <i className="fas fa-gamepad">Rackers</i></NavItem>
+                            <NavItem href="#" className="btn btn-link text-secondary" onClick={this.logout}>
+                                <span className="text-secondary">logout</span></NavItem>
+                        </>
+                    ) : (
+                            <>
+                                <NavItem href="/" className="brand">
+                                    <i className="fas fa-gamepad">Rackers</i>
+                                </NavItem>
+                                <NavItem href="/" className="btn btn-link text-secondary">
+                                    <span className="text-secondary">home</span>
+                                </NavItem>
+                                <NavItem href="/signin" className="btn btn-link text-secondary">
+                                    <span className="text-secondary">login</span>
+                                </NavItem>
+                                <NavItem href="/signup" className="btn btn-link">
+                                    <span className="text-secondary">sign up</span>
+                                </NavItem>
+                            </>
+                        )}
+                </Navbar>
+            </header >
         );
 
     }
 }
 
-export default Navbar
+export default Nav
