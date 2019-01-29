@@ -3,37 +3,31 @@ import { Redirect } from 'react-router-dom'
 import axios from 'axios'
 
 class LoginForm extends Component {
-    constructor() {
-        super()
-        this.state = {
-            username: '',
-            name: '',
-            password: '',
-            redirectTo: null
-        }
-        this.handleSubmit = this.handleSubmit.bind(this)
-        this.handleChange = this.handleChange.bind(this)
+    state = {
+        username: '',
+        password: '',
+        redirectTo: null
+    };
 
-    }
 
-    handleChange(event) {
+    handleChange = event => {
         this.setState({
             [event.target.name]: event.target.value
-        })
-    }
+        });
+    };
 
-    handleSubmit(event) {
+    handleSubmit = event => {
         event.preventDefault()
         console.log('handleSubmit')
         const formData = {
-        username: this.state.username,
-        name: this.state.name,
-        password: this.state.password,
+            username: this.state.username,
+            name: this.state.name,
+            password: this.state.password,
         }
-        console.log("login user submited = " +  JSON.stringify(formData))
+        console.log("login user submited = " + JSON.stringify(formData))
         axios({
             method: "post",
-            url: "api/Users/signin",
+            url: "api/users/signin",
             data: formData
         })
             .then(response => {
@@ -55,8 +49,8 @@ class LoginForm extends Component {
                 console.log('login error: ')
                 console.log(error);
 
-            })
-    }
+            });
+    };
 
     render() {
         if (this.state.redirectTo) {
@@ -64,7 +58,7 @@ class LoginForm extends Component {
         } else {
             return (
                 <div className="container mainContent">
-                    <h6 className="center text-28"><i class="material-icons">check_box</i> Login</h6>
+                    <h6 className="center text-28"><i className="material-icons">check_box</i> Login</h6>
                     <form className="form-horizontal">
                         <div className="form-group">
                             <div className="col-1 col-ml-auto">
@@ -77,21 +71,6 @@ class LoginForm extends Component {
                                     name="username"
                                     placeholder="Username"
                                     value={this.state.username}
-                                    onChange={this.handleChange}
-                                />
-                            </div>
-                        </div>
-                        <div className="form-group">
-                            <div className="col-1 col-ml-auto">
-                                <label className="form-label" htmlFor="name">Name</label>
-                            </div>
-                            <div className="col-3 col-mr-auto">
-                                <input className="form-input"
-                                    type="text"
-                                    id="name"
-                                    name="name"
-                                    placeholder="Name"
-                                    value={this.state.name}
                                     onChange={this.handleChange}
                                 />
                             </div>
@@ -123,6 +102,6 @@ class LoginForm extends Component {
             )
         }
     }
-}
+};
 
 export default LoginForm

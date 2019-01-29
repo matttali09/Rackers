@@ -1,11 +1,12 @@
 const router = require("express").Router();
 const usersController = require("../../controller/usersController");
-const passport = require("../../config/passport");
-const User = require('../../models/user');
+const passport = require("passport");
 
 // Matches with "/api/users" this is for all users in database
 router.route("/")
     .get(usersController.findAll)
+router.route("/high-score")
+    .get(usersController.findAllbyHighScore)
 
 
 // Matches with "/api/users/current" check route for current user 
@@ -24,24 +25,7 @@ router.post('/signup', (usersController.create));
 
 
 // Matches with "api/users/signin" signin route
-router.post('/signin', passport.authenticate(
-    'local'
-), (req, res, next) => {
-    console.log("login handling bro req = " + JSON.stringify(req.body));
-    console.log("res body = " + res.body)
-    // if (err) {
-    //     console.log(err)
-    //     return next(err)
-    // }
-
-    res.send(req.body);
-}
-)
-
-
-
-
-
+router.post('/signin', passport.authenticate('local'), (usersController.signin))
 
 // matches with "api/users/logout" used for current user only in session
 router.post('/logout', (req, res) => {

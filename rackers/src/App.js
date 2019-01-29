@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import axios from 'axios'
-import { Route, Link } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import API from "./utils/API";
 // components
 import Signup from './components/sign-up'
@@ -10,77 +9,52 @@ import Home from './components/home'
 import Footer from './components/footer'
 
 class App extends Component {
-  constructor() {
-    super()
-    this.state = {
-      loggedIn: false,
-      username: null
-    }
-
-    this.getUser = this.getUser.bind(this)
-    this.componentDidMount = this.componentDidMount.bind(this)
-    this.updateUser = this.updateUser.bind(this)
+  state = {
+    loggedIn: false,
+    username: null
   }
 
   componentDidMount() {
-    this.getUser()
+    this.getUsers()
   }
 
-  updateUser (userObject) {
+  updateUser = userObject => {
     this.setState(userObject)
   }
 
-  getUser() {
+  getUsers() {
     API.getUsers()
-    .then(response => {
-      console.log('Get user response: ')
-      console.log(response.data)
-      if (response.data.user) {
-        console.log('Get User: There is a user saved in the server session: ')
-
-        this.setState({
-          loggedIn: true,
-          username: response.data.user.username
-        })
-      } else {
-        console.log('Get user: no user');
-        this.setState({
-          loggedIn: false,
-          username: null
-        })
-      }
-    })
+      .then(response => {
+        console.log('Get user response: ')
+        console.log(response.data)
+        }
+      )
   }
 
   render() {
     return (
       <div className="App">
-   
+
         <Navbar updateUser={this.updateUser} loggedIn={this.state.loggedIn} />
         {/* greet user if logged in: */}
         {this.state.loggedIn &&
-          <p>Join the party, {this.state.username}!</p>
+          <div className="container mainContent">
+            <h6 className="center">Join the party, <span className="username-text">{this.state.username}!</span></h6>
+          </div>
         }
         {/* Routes to different components */}
-        <Route
-          exact path="/"
-          component={Home} />
-        <Route
-          path="/signin"
-          render={() =>
-            <LoginForm
-              updateUser={this.updateUser}
-            />}
-        />
-        <Route
-          path="/signup"
-          render={() =>
-            <Signup/>}
-        />
+        <Switch>
+          <Route exact path="/" component={Home}
+          />
+          <Route path="/signin" render={() => <LoginForm updateUser={this.updateUser} />}
+          />
+          <Route path="/signup" render={() => <Signup />}
+          />
+        </Switch>
         <Footer />
       </div>
     );
-    
+
   }
 }
 

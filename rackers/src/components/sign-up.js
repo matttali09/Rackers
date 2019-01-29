@@ -31,7 +31,7 @@ class Signup extends Component {
 		//request to server to add a new username/password
 		axios({
 			method: "post",
-			url: "/api/Users/signup",
+			url: "/api/users/signup",
 			data: formData,
 		})
 			.then(response => {
@@ -55,7 +55,7 @@ class Signup extends Component {
 	render() {
 		return (
 			<div className="container mainContent">
-				<h6 className="center text-28"><i class="material-icons">account_box</i> Sign up </h6>
+				<h6 className="center text-28"><i className="material-icons">account_box</i> Sign up </h6>
 				<form className="form-horizontal">
 					<div className="form-group">
 						<div className="col-1 col-ml-auto">

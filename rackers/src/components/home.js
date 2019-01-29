@@ -1,6 +1,17 @@
 import React, { Component } from 'react'
+import API from '../utils/API'
 
 class Home extends Component {
+    state = {
+        highScores: []
+    }
+// getUsersbyHighscore() = {
+//     API.getUsersbyHighscore().then(response => {
+//         console.log('Get user response: ')
+//         console.log(response.data)
+//         }
+//       ))
+//     }
 
     render() {
         const imageStyle = {
