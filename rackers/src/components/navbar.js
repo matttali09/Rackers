@@ -1,11 +1,8 @@
 import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom'
-import { Route, Link } from 'react-router-dom'
-import M from "materialize-css";
 import "materialize-css/dist/css/materialize.min.css";
 import '../App.css';
-import { Navbar, NavItem, Icon } from 'react-materialize'
-import axios from 'axios'
+import { Navbar, NavItem} from 'react-materialize'
+import API from '../utils/API'
 
 class Nav extends Component {
     constructor() {
@@ -30,7 +27,7 @@ class Nav extends Component {
     logout(event) {
         event.preventDefault()
         console.log('logging out')
-        axios.post('/api/users/logout').then(response => {
+        API.signOutUser().then(response => {
             console.log(response.data)
             if (response.status === 200) {
                 this.props.updateUser({

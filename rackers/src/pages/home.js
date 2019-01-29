@@ -1,17 +1,7 @@
 import React, { Component } from 'react'
-import API from '../utils/API'
+import HighScoreTable from '../components/highScoreTable'
 
 class Home extends Component {
-    state = {
-        highScores: []
-    }
-// getUsersbyHighscore() = {
-//     API.getUsersbyHighscore().then(response => {
-//         console.log('Get user response: ')
-//         console.log(response.data)
-//         }
-//       ))
-//     }
 
     render() {
         const imageStyle = {
@@ -22,9 +12,11 @@ class Home extends Component {
                 <h6 className="center">It's good to be home</h6>
                 <div className="row">
                     <img className="col s12 m4" style={imageStyle} src="./images/game1.png" alt="Game 1" href="/game1" />
-                    <p className="col s12 m8" >Click on the image to start the game bro! controls are WSAD and left and/or right click 
-                        mouse to fire bullets. Try to stay alive as long as possible!
+                    <p className="col s12 m8" >Click on the image to start the game! controls are WSAD for movement. 
+                        Left and/or right click mouse to fire bullets. pressing "P" will pause the game. 
+                        Try to stay alive as long as possible!
                     </p>
+                    <HighScoreTable />
                 </div>
             </div>
         )
@@ -32,4 +24,4 @@ class Home extends Component {
     }
 }
 
-export default Home
+export default Home;

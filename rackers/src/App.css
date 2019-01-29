@@ -66,6 +66,18 @@ input {
   color: white;
 }
 
+/* highscore and user display styling */
+
+.username-text {
+  color: gold;
+}
+.ranking-text {
+  color: cyan;
+}
+.score-text {
+  color: red;
+}
+
 /* footer styling */
 
 #footer {

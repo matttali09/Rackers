@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom'
 import API from "./utils/API";
 // components
-import Signup from './components/sign-up'
-import LoginForm from './components/login-form'
+import Signup from './pages/sign-up'
+import LoginForm from './pages/login-form'
+import Home from './pages/home'
 import Navbar from './components/navbar'
-import Home from './components/home'
 import Footer from './components/footer'
 
 class App extends Component {
@@ -48,7 +48,7 @@ class App extends Component {
           />
           <Route path="/signin" render={() => <LoginForm updateUser={this.updateUser} />}
           />
-          <Route path="/signup" render={() => <Signup />}
+          <Route path="/signup" render={() => <Signup updateUser={this.updateUser}/>}
           />
         </Switch>
         <Footer />

@@ -14,8 +14,8 @@ class Footer extends Component {
                         <p className="grey-text text-lighten-1">
                             This site is a combined effort between Matthew Taliancich, and Carlo Cabrera.
                             We're a group of web developers based out of Orlando, Fl.
-                            We wanted to create an application that would be a safehaven of unbiased
-                            movie reviews. We hope you enjoy our site.
+                            We wanted to create an application that would allow for gamers to come together and 
+                            have a platform to play canvas and react games. 
                     </p>
                     </div>
                 </div>
