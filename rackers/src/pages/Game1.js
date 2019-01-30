@@ -16,17 +16,17 @@ export default class Canvas extends Component {
       name: 'P',
     },
     enemy: {
-      x: 150,
-      spdX: 10,
-      y: 350,
-      spdY: 15,
+      x: 400,
+      spdX: 11,
+      y: 200,
+      spdY: 16,
       name: 'E',
     },
     enemy2: {
       x: 150,
-      spdX: 10,
-      y: 350,
-      spdY: 15,
+      spdX: 8,
+      y: 320,
+      spdY: 12,
       name: 'E',
     },
   };
@@ -35,47 +35,47 @@ export default class Canvas extends Component {
     const { canvasWidth, canvasHeight } = this.state.canvasSize;
     this.canvasRender.width = canvasWidth;
     this.canvasRender.height = canvasHeight;
-    this.drawImg(this.canvasRender)
+    this.drawImg(this.canvasRender);
   }
+  componentWillUnmount() {
+    clearInterval(this.interval)
+  }
+  // sayHi = () => {
+  //   this.interval = setInterval(() => {
+  //     console.log("Hi there")
+  //   }, 2000)
+  // }
 
   drawImg(canvasID) {
     const ctx = canvasID.getContext("2d");
     ctx.font = "30px Arial";
-    setInterval(this.update(ctx), 500)
+    this.interval = setInterval(() => {
+      this.update(ctx)
+    },40)
   }
-  update = (ctx) =>{
-    const player = this.state.player;
-    player.x += player.spdX;
-    player.y += player.spdY;
-    ctx.fillText(player.name,player.x,player.y);
-    console.log('hello',player.x);
-   
-    if(player.x > 500){
-            console.log('Out of Bounds');
+  updateEntity = (something, ctx) => {
+    console.log(this.state.message)
+    something.x += something.spdX;
+    something.y += something.spdY;
+    ctx.fillText(something.name,something.x,something.y);
+           
+           
+    if(something.x < 0 || something.x > this.state.canvasSize.canvasWidth){
+            console.log(this.state.message);
+            something.spdX = -something.spdX;
     }
-  }
+    if(something.y < 0 || something.y > this.state.canvasSize.canvasHeight){
+            console.log(this.state.message);
+            something.spdY = -something.spdY;
+    }
+}
 
-//   updateEntity = (something, ctx) => {
-//     something.x += something.spdX;
-//     something.y += something.spdY;
-//     ctx.fillText(something.name,something.x,something.y);
-           
-           
-//     if(something.x < 0 || something.x > this.state.canvasSize.canvasWidth){
-//             console.log(this.state.message);
-//             something.spdX = -something.spdX;
-//     }
-//     if(something.y < 0 || something.y > this.state.canvasSize.canvasHeight){
-//             console.log(this.state.message);
-//             something.spdY = -something.spdY;
-//     }
-// }
-
-// update = (ctx) => {
-//   this.updateEntity(this.state.enemy, ctx);
-//   this.updateEntity(this.state.enemy2, ctx);
-//   this.updateEntity(this.state.player, ctx);
-// }
+update = (ctx) => {
+  ctx.clearRect(0,0, this.state.canvasSize.canvasWidth, this.state.canvasSize.canvasHeight)
+  this.updateEntity(this.state.enemy, ctx);
+  this.updateEntity(this.state.enemy2, ctx);
+  this.updateEntity(this.state.player, ctx);
+}
   // code for component did mount ==================================
   // const { canvasWidth, canvasHeight } = this.state.canvasSize;
   // this.canvasRender.width = canvasWidth;
