@@ -40,7 +40,7 @@ class App extends Component {
         {/* greet user if logged in: */}
         {this.state.loggedIn &&
           <div className="container mainContent">
-            <h6 className="center">Join the party, <span className="username-text">{this.state.username}!</span></h6>
+            <h6 className="center">Welcome, <span className="username-text">{this.state.username}!</span></h6>
           </div>
         }
         {/* Routes to different components */}
