@@ -51,7 +51,7 @@ module.exports = {
     },
 
     signin: function (req, res, next) {
-        console.log("/sigin controller req = " + JSON.stringify(req.body));
+        console.log("/signin controller req = " + JSON.stringify(req.body));
         req.session.save((err) => {
             if (err) {
                 return next(err);

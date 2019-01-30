@@ -5,6 +5,7 @@ import API from "./utils/API";
 import Signup from './pages/sign-up'
 import LoginForm from './pages/login-form'
 import Home from './pages/home'
+import Game1 from './pages/Game1'
 import Navbar from './components/navbar'
 import Footer from './components/footer'
 
@@ -49,6 +50,8 @@ class App extends Component {
           <Route path="/signin" render={() => <LoginForm updateUser={this.updateUser} />}
           />
           <Route path="/signup" render={() => <Signup updateUser={this.updateUser}/>}
+          />
+          <Route path="/game1" render={() => <Game1 />}
           />
         </Switch>
         <Footer />

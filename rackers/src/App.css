@@ -78,6 +78,14 @@ input {
   color: red;
 }
 
+/* canvas styling */
+canvas {
+  display: block;
+  background-color: white;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 /* footer styling */
 
 #footer {

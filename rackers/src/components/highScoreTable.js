@@ -9,6 +9,7 @@ class highScoreTable extends Component {
     componentWillMount = () => {
         this.getUsersbyHighscore()
     }
+    
     getUsersbyHighscore = () => {
         API.getUsersbyHighscore().then(response => {
             console.log('HighScore user response: ')
@@ -34,10 +35,10 @@ class highScoreTable extends Component {
                 </thead>
                 <tbody>
                     {this.state.highScores.map((user, index) =>
-                        <tr key={user.id}>
-                            <td className="ranking-text">{index + 1}.</td>
-                            <td className="username-text">{user.username}</td>
-                            <td className="score-text">{user.highScore}</td>
+                        <tr key={user._id}>
+                            <td key={index + 500} className="ranking-text">{index + 1}.</td>
+                            <td key={user.username} className="username-text">{user.username}</td>
+                            <td key={user.highScore} className="score-text">{user.highScore}</td>
                         </tr>
                     )}
                 </tbody>

@@ -5,26 +5,12 @@ import { Navbar, NavItem} from 'react-materialize'
 import API from '../utils/API'
 
 class Nav extends Component {
-    constructor() {
-        super()
-        this.logout = this.logout.bind(this)
-    }
 
     componentDidMount() {
-        // const options = {
-        //   inDuration: 250,
-        //   outDuration: 200,
-        //   draggable: true
-        // };
-    
-        // M.Sidenav.init(this.Sidenav);
-    
-        // let instance = M.Sidenav.getInstance(this.Sidenav);
-        // instance.open();
-        // console.log(instance.isOpen);
-      }
 
-    logout(event) {
+    }
+
+    logout = event => {
         event.preventDefault()
         console.log('logging out')
         API.signOutUser().then(response => {
