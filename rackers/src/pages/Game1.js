@@ -8,30 +8,58 @@ export default class Canvas extends Component {
     username: "Sephiroth91",
     canvasSize: { canvasWidth: 640, canvasHeight: 360 },
     message: "bouncing",
-    player: {
-      x: 50,
+    enemyList: {},
+    player: {x: 50,
       spdX: 30,
       y: 40,
       spdY: 5,
       name: 'P',
+
     },
-    enemy: {
-      x: 400,
-      spdX: 11,
-      y: 200,
-      spdY: 16,
+    hp: 20,
+    timeWhenGameStarted: null
+  };
+  
+  // only start the timer when the component is mounted, clear on dismount and update during setinterval 
+  // function to get the time from game start
+  startTimer = () => {
+    this.setState({
+      timeWhenGameStarted: Date.now()
+    })
+  }
+
+  enemy = (id, x, y, spdX, spdY) => {
+    let enemy = {
+      x: x,
+      spdX: spdX,
+      y: y,
+      spdY: spdY,
       name: 'E',
-    },
-    enemy2: {
-      x: 150,
-      spdX: 8,
-      y: 320,
-      spdY: 12,
-      name: 'E',
-    },
+      id: id,
+    };
+    this.setState(prevState => ({
+      enemyList: {
+        ...prevState.enemyList,
+        [id]: enemy,
+      }
+    }));
   };
 
+  getDistanceBetweenEntity = (entity1, entity2) => {  //return distance (number)
+    let vx = entity1.x - entity2.x;
+    let vy = entity1.y - entity2.y;
+    return Math.sqrt(vx * vx + vy * vy);
+  }
+  testCollisionEntity = (entity1, entity2) => {       //return if colliding (true/false)
+    let distance = this.getDistanceBetweenEntity(entity1, entity2);
+    return distance < 30;
+  }
   componentDidMount() {
+    this.startTimer();
+    this.getMousePosition(this.state.player);
+    this.enemy('E1', 150, 350, 10, 15);
+    this.enemy('E2', 250, 250, -10, -15);
+    this.enemy('E3', 250, 150, -10, -8);
     const { canvasWidth, canvasHeight } = this.state.canvasSize;
     this.canvasRender.width = canvasWidth;
     this.canvasRender.height = canvasHeight;
@@ -40,47 +68,73 @@ export default class Canvas extends Component {
   componentWillUnmount() {
     clearInterval(this.interval)
   }
-  // sayHi = () => {
-  //   this.interval = setInterval(() => {
-  //     console.log("Hi there")
-  //   }, 2000)
-  // }
 
   drawImg(canvasID) {
     const ctx = canvasID.getContext("2d");
     ctx.font = "30px Arial";
     this.interval = setInterval(() => {
       this.update(ctx)
-    },40)
+    }, 40)
   }
+  getMousePosition = (player) => {
+    document.onmousemove = function (mouse) {
+      var mouseX = mouse.clientX;
+      var mouseY = mouse.clientY;
+      // console.log("mouseX = " + mouseX)
+      // console.log("mouseY = " + mouseY)
+
+      player.x = mouseX - 260;
+      player.y = mouseY - 120;
+    }
+  }
+
   updateEntity = (something, ctx) => {
-    console.log(this.state.message)
+    this.updateEntityPosition(something)
+    this.drawEntity(something, ctx)
+  }
+  updateEntityPosition = (something) => {
     something.x += something.spdX;
     something.y += something.spdY;
-    ctx.fillText(something.name,something.x,something.y);
-           
-           
-    if(something.x < 0 || something.x > this.state.canvasSize.canvasWidth){
-            console.log(this.state.message);
-            something.spdX = -something.spdX;
-    }
-    if(something.y < 0 || something.y > this.state.canvasSize.canvasHeight){
-            console.log(this.state.message);
-            something.spdY = -something.spdY;
-    }
-}
 
-update = (ctx) => {
-  ctx.clearRect(0,0, this.state.canvasSize.canvasWidth, this.state.canvasSize.canvasHeight)
-  this.updateEntity(this.state.enemy, ctx);
-  this.updateEntity(this.state.enemy2, ctx);
-  this.updateEntity(this.state.player, ctx);
-}
-  // code for component did mount ==================================
-  // const { canvasWidth, canvasHeight } = this.state.canvasSize;
-  // this.canvasRender.width = canvasWidth;
-  // this.canvasRender.height = canvasHeight;
-  // this.drawImg(this.canvasRender, "P")
+
+    if (something.x < 0 || something.x > this.state.canvasSize.canvasWidth) {
+      // console.log(this.state.message);
+      something.spdX = -something.spdX;
+    }
+    if (something.y < 0 || something.y > this.state.canvasSize.canvasHeight) {
+      // console.log(this.state.message);
+      something.spdY = -something.spdY;
+    }
+  }
+
+  drawEntity = (something, ctx) => {
+    ctx.fillText(something.name, something.x, something.y);
+  }
+
+  update = (ctx) => {
+    ctx.clearRect(0, 0, this.state.canvasSize.canvasWidth, this.state.canvasSize.canvasHeight);
+    console.log(`this.state.timestarted = ${ Date.now() - this.state.timeWhenGameStarted }`)
+
+    Object.keys(this.state.enemyList).map((enemy) => {
+      let thisenemy = this.state.enemyList[enemy];
+      this.updateEntity(thisenemy, ctx);
+      this.isColliding = this.testCollisionEntity(this.state.player, thisenemy)
+      if (this.isColliding) {
+        this.setState({
+          hp: this.state.hp - 1
+        })
+        if(this.state.hp <= 0) {
+          console.log(`You Lost, You Survived for ${ Date.now() - this.state.timeWhenGameStarted }`)
+        }
+        console.log("Player HP = " + this.state.hp)
+      }
+      return null;
+    })
+
+    this.drawEntity(this.state.player, ctx);
+    ctx.fillText(this.state.hp+ " HP", 0, 30)
+  }
+
   // code for drawimg ==================================
   // const ctx = canvasID.getContext("2d");
   //   var base_image = new Image();

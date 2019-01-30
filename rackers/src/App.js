@@ -62,3 +62,18 @@ class App extends Component {
 }
 
 export default App;
+// {this.state.loggedIn ? (
+//   <Switch>
+//     <Route exact path="/" component={Home}
+//     />
+//     <Route path="/game1" render={() => <Game1 />}
+//     />
+//   </Switch>
+//    ) : (
+// <Switch>
+//       <Route path="/signin" render={() => <LoginForm updateUser={this.updateUser} />}
+//     />
+//     <Route path="/signup" render={() => <Signup updateUser={this.updateUser}/>}
+//     />
+// </Switch>
+//    )}
