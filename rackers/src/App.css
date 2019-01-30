@@ -97,7 +97,7 @@ canvas {
 }
 
 footer i {
-  width: 175px;
+  /* width: 175px; */
   font-size: 24px;
   margin-top: 0.5em;
 }

@@ -10,7 +10,7 @@ class Home extends Component {
         }
         return (
             <div className="container mainContent">
-                <h6 className="center">It's good to be home</h6>
+                <h6 className="center">Game #1</h6>
                 <div className="row">
                 <Link to="/game1" className="active">
                     <img className="col s12 m4" style={imageStyle} src="./images/game1.png" alt="Game 1" href="/game1" />

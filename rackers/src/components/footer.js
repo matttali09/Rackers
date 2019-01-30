@@ -1,34 +1,51 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
+
+const today = new Date();
 
 class Footer extends Component {
-    render() {
-        return (
-        <footer className="page-footer" id="footer">
-            <div className="container">
-                <div className="row">
-                    <div className="col s12 m4">
-                        <i className="fas fa-gamepad">Rackers</i>
-                </div>
-                    <div className="col s12 m8">
-                        <h6 className="grey-text text-lighten-1">Team Members</h6>
-                        <p className="grey-text text-lighten-1">
-                            This site is a combined effort between Matthew Taliancich, and Carlo Cabrera.
-                            We're a group of web developers based out of Orlando, Fl.
-                            We wanted to create an application that would allow for gamers to come together and 
-                            have a platform to play canvas and react games. 
-                    </p>
-                    </div>
-                </div>
+  render() {
+    return (
+      <footer className="page-footer" id="footer">
+        <div className="container">
+          <div className="row">
+            <div className="col s12 m8">
+              <h6 className="grey-text text-lighten-1">About Rackers</h6>
+              <p className="grey-text text-lighten-1" />
+              We are a team of Central FL based web developers and wanted to
+              create an application that would allow for gamers to come together
+              and have a platform to play canvas and react games.
             </div>
-            <div className="footer-copyright">
-                <div className="container">
-                    <p className="grey-text text-lighten-1">Created by Rackers</p>
-                </div>
+            <div className="col s12 m4">
+              <h6 className="grey-text text-lighten-1">Team</h6>
+              <p className="grey-text text-lighten-1">
+                <li>
+                  <a href="https://www.linkedin.com/in/matthew-taliancich-718970168/">
+                    Matthew Taliancich
+                  </a>
+                </li>
+                <li>
+                  <a href="https://www.linkedin.com/in/carlocabrera/">
+                    Carlo Cabrera
+                  </a>
+                </li>
+              </p>
             </div>
-        </footer>
-
-        )
-    }       
+          </div>
+        </div>
+        <div className="footer-copyright">
+          <div className="container">
+            <center>
+              <p className="grey-text text-lighten-1">
+                Copyright © {today.getFullYear()} All rights reserved | Made
+                with <i class="far fa-heart" aria-hidden="true" /> by{" "}
+                <i className="fas fa-gamepad">Rackers</i>
+              </p>
+            </center>
+          </div>
+        </div>
+      </footer>
+    );
+  }
 }
 
-export default Footer
+export default Footer;
