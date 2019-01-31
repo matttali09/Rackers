@@ -54,7 +54,9 @@ class Signup extends Component {
 		} else {
 			return (
 				<div className="container mainContent">
-					<h6 className="center text-28"><i className="material-icons">account_box</i> Sign up </h6>
+				<center>
+					<h6 className="center text-28"><i className="material-icons">account_box</i> Sign up </h6></center>
+					<center>
 					<form className="form-horizontal">
 						<div className="form-group">
 							<div className="col-1 col-ml-auto">
@@ -109,6 +111,7 @@ class Signup extends Component {
 							>Sign up</button>
 						</div>
 					</form>
+					</center>
 				</div>
 
 			)
