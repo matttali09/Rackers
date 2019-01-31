@@ -245,7 +245,7 @@ export default class Canvas extends Component {
         this.setState({
           score: this.state.score + 1000
         })
-        // delete thisupgrade
+        delete this.state.upgradeList[upgrade]
         // console.log("Player HP = " + this.state.hp)
       }
       return null;
