@@ -37,7 +37,7 @@ class Footer extends Component {
             <center>
               <p className="grey-text text-lighten-1">
                 Copyright © {today.getFullYear()} All rights reserved | Made
-                with <i class="far fa-heart" aria-hidden="true" /> by{" "}
+                with <i className="far fa-heart" aria-hidden="true" /> by{" "}
                 <i className="fas fa-gamepad">Rackers</i>
               </p>
             </center>

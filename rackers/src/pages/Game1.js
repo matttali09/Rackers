@@ -9,17 +9,22 @@ export default class Canvas extends Component {
     canvasSize: { canvasWidth: 640, canvasHeight: 360 },
     message: "bouncing",
     enemyList: {},
-    player: {x: 50,
+    upgradeList: {},
+    player: {
+      x: 50,
       spdX: 30,
       y: 40,
       spdY: 5,
       name: 'P',
-
+      color: "green",
+      width: 20,
+      height: 20,
     },
     hp: 20,
+    frameCount: 0,
     timeWhenGameStarted: null
   };
-  
+
   // only start the timer when the component is mounted, clear on dismount and update during setinterval 
   // function to get the time from game start
   startTimer = () => {
@@ -28,7 +33,7 @@ export default class Canvas extends Component {
     })
   }
 
-  enemy = (id, x, y, spdX, spdY) => {
+  enemy = (id, x, y, spdX, spdY, width, height) => {
     let enemy = {
       x: x,
       spdX: spdX,
@@ -36,6 +41,9 @@ export default class Canvas extends Component {
       spdY: spdY,
       name: 'E',
       id: id,
+      width: height,
+      height: width,
+      color: "red"
     };
     this.setState(prevState => ({
       enemyList: {
@@ -45,30 +53,73 @@ export default class Canvas extends Component {
     }));
   };
 
+  randomlyGenerateEnemy = () => {
+    //Math.random() returns a number between 0 and 1
+    var x = Math.random() * 640;
+    var y = Math.random() * 360;
+    var height = 10 + Math.random() * 30;     //between 10 and 40
+    var width = 10 + Math.random() * 30;
+    var id = Math.random();
+    var spdX = 5 + Math.random() * 5;
+    var spdY = 5 + Math.random() * 5;
+    this.enemy(id, x, y, spdX, spdY, width, height);
+  }
+
   getDistanceBetweenEntity = (entity1, entity2) => {  //return distance (number)
     let vx = entity1.x - entity2.x;
     let vy = entity1.y - entity2.y;
     return Math.sqrt(vx * vx + vy * vy);
   }
   testCollisionEntity = (entity1, entity2) => {       //return if colliding (true/false)
-    let distance = this.getDistanceBetweenEntity(entity1, entity2);
-    return distance < 30;
+    if (entity2) {
+      let rect1 = {
+        x: entity1.x - (entity1.width / 2),
+        y: entity1.x - (entity1.height / 2),
+        width: entity1.width,
+        height: entity1.height,
+      }
+      let rect2 = {
+        x: entity2.x - (entity2.width / 2),
+        y: entity2.x - (entity2.height / 2),
+        width: entity2.width,
+        height: entity2.height,
+      }
+      return this.testCollisionRectRect(rect1, rect2)
+    }
+    else {
+      return null;
+    }
   }
+  testCollisionRectRect = (rect1, rect2) => {
+    if (rect2) {
+      return rect1.x <= rect2.x + rect2.width
+        && rect2.x <= rect1.x + rect1.width
+        && rect1.y <= rect2.y + rect2.height
+        && rect2.y <= rect1.y + rect1.height;
+    }
+    else {
+      return null;
+    }
+  }
+
+  // function that starts the game up when the component is loaded
   componentDidMount() {
     this.startTimer();
     this.getMousePosition(this.state.player);
-    this.enemy('E1', 150, 350, 10, 15);
-    this.enemy('E2', 250, 250, -10, -15);
-    this.enemy('E3', 250, 150, -10, -8);
+    this.randomlyGenerateEnemy();
+    this.randomlyGenerateEnemy();
+    this.randomlyGenerateEnemy();
     const { canvasWidth, canvasHeight } = this.state.canvasSize;
     this.canvasRender.width = canvasWidth;
     this.canvasRender.height = canvasHeight;
     this.drawImg(this.canvasRender);
   }
+  // clear the setinterval id on dismount
   componentWillUnmount() {
     clearInterval(this.interval)
   }
 
+  // get the canvas refrence passed in and get the context to store and send to other functions
   drawImg(canvasID) {
     const ctx = canvasID.getContext("2d");
     ctx.font = "30px Arial";
@@ -78,10 +129,17 @@ export default class Canvas extends Component {
   }
   getMousePosition = (player) => {
     document.onmousemove = function (mouse) {
-      var mouseX = mouse.clientX;
-      var mouseY = mouse.clientY;
-      // console.log("mouseX = " + mouseX)
-      // console.log("mouseY = " + mouseY)
+      let mouseX = mouse.clientX - 8;
+      let mouseY = mouse.clientY - 8;
+
+      if (mouseX < player.width / 2 + 260)
+        mouseX = player.width / 2 + 260;
+      if (mouseX > 640 - player.width / 2 + 260)
+        mouseX = 640 - player.width / 2 + 260;
+      if (mouseY < player.height / 2 + 120)
+        mouseY = player.height / 2 + 120;
+      if (mouseY > 360 - player.height / 2 + 120)
+        mouseY = 360 - player.height / 2 + 120;
 
       player.x = mouseX - 260;
       player.y = mouseY - 120;
@@ -89,31 +147,57 @@ export default class Canvas extends Component {
   }
 
   updateEntity = (something, ctx) => {
-    this.updateEntityPosition(something)
-    this.drawEntity(something, ctx)
+    if (something) {
+      this.updateEntityPosition(something)
+      this.drawEntity(something, ctx)
+    }
+    else {
+      return null;
+    }
   }
   updateEntityPosition = (something) => {
-    something.x += something.spdX;
-    something.y += something.spdY;
+    if (something) {
+      something.x += something.spdX;
+      something.y += something.spdY;
 
 
-    if (something.x < 0 || something.x > this.state.canvasSize.canvasWidth) {
-      // console.log(this.state.message);
-      something.spdX = -something.spdX;
+      if (something.x < 0 || something.x > this.state.canvasSize.canvasWidth) {
+        // console.log(this.state.message);
+        something.spdX = -something.spdX;
+      }
+      if (something.y < 0 || something.y > this.state.canvasSize.canvasHeight) {
+        // console.log(this.state.message);
+        something.spdY = -something.spdY;
+      }
     }
-    if (something.y < 0 || something.y > this.state.canvasSize.canvasHeight) {
-      // console.log(this.state.message);
-      something.spdY = -something.spdY;
+    else {
+      return null;
     }
   }
 
   drawEntity = (something, ctx) => {
-    ctx.fillText(something.name, something.x, something.y);
+    if (something) {
+      ctx.save();
+      ctx.fillStyle = something.color;
+      ctx.fillRect(something.x - (something.width / 2), something.y - (something.height), something.width, something.height);
+      ctx.restore();
+    }
+    else {
+      return null;
+    }
   }
 
+  // function on the interval loop that clears and then rerenders the canvas
   update = (ctx) => {
     ctx.clearRect(0, 0, this.state.canvasSize.canvasWidth, this.state.canvasSize.canvasHeight);
-    console.log(`this.state.timestarted = ${ Date.now() - this.state.timeWhenGameStarted }`)
+    // console.log(`this.state.timestarted = ${Date.now() - this.state.timeWhenGameStarted}`)
+    this.setState({
+      frameCount: this.state.frameCount + 1
+    });
+
+    if (this.state.frameCount % 100 === 0)      //every 4 sec generate new enemy bracket not needed
+      this.randomlyGenerateEnemy();
+    // console.log(`frame count = ${this.state.frameCount}`)
 
     Object.keys(this.state.enemyList).map((enemy) => {
       let thisenemy = this.state.enemyList[enemy];
@@ -123,8 +207,9 @@ export default class Canvas extends Component {
         this.setState({
           hp: this.state.hp - 1
         })
-        if(this.state.hp <= 0) {
-          console.log(`You Lost, You Survived for ${ Date.now() - this.state.timeWhenGameStarted }`)
+        if (this.state.hp <= 0) {
+          console.log(`You Lost, You Survived for ${Date.now() - this.state.timeWhenGameStarted} ms.`);
+          this.startNewGame()
         }
         console.log("Player HP = " + this.state.hp)
       }
@@ -132,7 +217,21 @@ export default class Canvas extends Component {
     })
 
     this.drawEntity(this.state.player, ctx);
-    ctx.fillText(this.state.hp+ " HP", 0, 30)
+    ctx.fillText(this.state.hp + " HP", 0, 30);
+    ctx.fillText(`Score : ${this.state.frameCount}`, 200, 30);
+  }
+  // function to reset states and 
+  startNewGame = () => {
+    // let enemy = this.randomlyGenerateEnemy();
+    this.setState({
+      timeWhenGameStarted: Date.now(),
+      frameCount: 0,
+      hp: 20,
+      enemyList: {},
+    })
+    this.randomlyGenerateEnemy();
+    this.randomlyGenerateEnemy();
+    this.randomlyGenerateEnemy();
   }
 
   // code for drawimg ==================================
@@ -240,12 +339,7 @@ export default class Canvas extends Component {
   //   Img.upgrade2 = new Image();
   //   Img.upgrade2.src = './images/upgrade2.png';
 
-  //   testCollisionRectRect = function(rect1,rect2){
-  //     return rect1.x <= rect2.x+rect2.width
-  //       && rect2.x <= rect1.x+rect1.width
-  //       && rect1.y <= rect2.y + rect2.height
-  //       && rect2.y <= rect1.y + rect1.height;
-  //   }
+
   //   document.onmousedown = ({ which }) => {
   //     if (which === 1)
   //       player.pressingMouseLeft = true;
