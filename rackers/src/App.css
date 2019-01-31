@@ -1,5 +1,6 @@
 body {
-  background: url("http://www.puppygames.net/images/ultratron/UT-twinshot-2.jpg") no-repeat center center fixed;
+  background: url("http://www.puppygames.net/images/ultratron/UT-twinshot-2.jpg")
+    no-repeat center center fixed;
   background-size: cover;
   color: white;
 }
@@ -20,21 +21,21 @@ nav ul a {
 }
 
 nav .brand a {
-height: -webkit-fill-available
+  height: -webkit-fill-available;
 }
 
 .btn-link {
-  background: #2f3738;
+  background: #000000;
 }
 
 /* sidnav fix */
 
 nav .nav-wrapper .button-collapse {
-  display: none
+  display: none;
 }
 
 .hide-on-med-and-down {
-  display: none
+  display: none;
 }
 nav ul {
   width: 100%;
@@ -54,17 +55,38 @@ nav ul li.btn {
   margin-top: 2em;
   margin-bottom: 1em;
   padding: 1em;
+  width: 50%;
 }
 
 h6 {
   color: white;
-  margin-top: 1.5em;
+  /* margin-top: 1.5em; */
   background-color: #647678;
   padding: 0.75em 0.75em 0.75em 0.75em;
+  width: 75%;
+  border-radius: 5px;
+  
 }
 input {
   color: white;
+  max-width: 300px;
+  margin: auto;
+  width: 50%;
 }
+
+img {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+  width: 150px;
+  
+}
+
+img:hover {
+  box-shadow: 0 0 2px 1px rgba(222, 229, 231, 0.5);
+}
+
+
 
 /* highscore and user display styling */
 
@@ -90,6 +112,7 @@ canvas {
 
 #footer {
   background-color: #647678;
+  max-height: 5%;
 }
 
 #footer p {
