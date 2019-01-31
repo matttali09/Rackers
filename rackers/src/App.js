@@ -28,7 +28,7 @@ class App extends Component {
       .then(response => {
         console.log('Get user response: ')
         console.log(response.data)
-        }
+      }
       )
   }
 
@@ -49,9 +49,19 @@ class App extends Component {
           />
           <Route path="/signin" render={() => <LoginForm updateUser={this.updateUser} />}
           />
-          <Route path="/signup" render={() => <Signup updateUser={this.updateUser}/>}
+          <Route path="/signup" render={() => <Signup updateUser={this.updateUser} />}
           />
-          <Route path="/game1" render={() => <Game1 />}
+          <Route path="/game1" render={() => <Game1 player={{
+            x: 50,
+            spdX: 30,
+            y: 40,
+            spdY: 5,
+            name: 'P',
+            color: "green",
+            width: 20,
+            height: 20,
+          }}
+          />}
           />
         </Switch>
         <Footer />

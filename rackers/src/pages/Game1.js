@@ -7,21 +7,12 @@ export default class Canvas extends Component {
   state = {
     username: "Sephiroth91",
     canvasSize: { canvasWidth: 640, canvasHeight: 360 },
-    message: "bouncing",
     enemyList: {},
     upgradeList: {},
-    player: {
-      x: 50,
-      spdX: 30,
-      y: 40,
-      spdY: 5,
-      name: 'P',
-      color: "green",
-      width: 20,
-      height: 20,
-    },
+    player: this.props.player,
     hp: 20,
     frameCount: 0,
+    score: 0,
     timeWhenGameStarted: null
   };
 
@@ -33,6 +24,7 @@ export default class Canvas extends Component {
     })
   }
 
+  // function to construct enemy object and update enemy list
   enemy = (id, x, y, spdX, spdY, width, height) => {
     let enemy = {
       x: x,
@@ -53,6 +45,7 @@ export default class Canvas extends Component {
     }));
   };
 
+  // called to create an enemy with random property values
   randomlyGenerateEnemy = () => {
     //Math.random() returns a number between 0 and 1
     var x = Math.random() * 640;
@@ -65,22 +58,62 @@ export default class Canvas extends Component {
     this.enemy(id, x, y, spdX, spdY, width, height);
   }
 
+  // function to construct upgrade object and update upgrade list
+  upgrade = (id, x, y, spdX, spdY, width, height) => {
+    let upgrades = {
+      x: x,
+      spdX: spdX,
+      y: y,
+      spdY: spdY,
+      name: 'E',
+      id: id,
+      width: height,
+      height: width,
+      color: "orange"
+    };
+    this.setState(prevState => ({
+      upgradeList: {
+        ...prevState.upgradeList,
+        [id]: upgrades,
+      }
+    }));
+  };
+
+  // function to randomly generate upgrade
+  randomlyGenerateUpgrade = () => {
+    //Math.random() returns a number between 0 and 1
+    var x = Math.random() * 640;
+    var y = Math.random() * 360;
+    var height = 10;     //between 10 and 40
+    var width = 10;
+    var id = Math.random();
+    var spdX = 0;
+    var spdY = 0;
+    this.upgrade(id, x, y, spdX, spdY, width, height);
+  }
+
   getDistanceBetweenEntity = (entity1, entity2) => {  //return distance (number)
-    let vx = entity1.x - entity2.x;
-    let vy = entity1.y - entity2.y;
-    return Math.sqrt(vx * vx + vy * vy);
+    // clean for state catch up second entity or something is enemy who may not always be there at game start.
+    if (entity2) {
+      let vx = entity1.x - entity2.x;
+      let vy = entity1.y - entity2.y;
+      return Math.sqrt(vx * vx + vy * vy);
+    }
+    else {
+      return null;
+    }
   }
   testCollisionEntity = (entity1, entity2) => {       //return if colliding (true/false)
     if (entity2) {
       let rect1 = {
         x: entity1.x - (entity1.width / 2),
-        y: entity1.x - (entity1.height / 2),
+        y: entity1.y - (entity1.height / 2),
         width: entity1.width,
         height: entity1.height,
       }
       let rect2 = {
         x: entity2.x - (entity2.width / 2),
-        y: entity2.x - (entity2.height / 2),
+        y: entity2.y - (entity2.height / 2),
         width: entity2.width,
         height: entity2.height,
       }
@@ -105,7 +138,7 @@ export default class Canvas extends Component {
   // function that starts the game up when the component is loaded
   componentDidMount() {
     this.startTimer();
-    this.getMousePosition(this.state.player);
+    this.getMousePosition(this.props.player);
     this.randomlyGenerateEnemy();
     this.randomlyGenerateEnemy();
     this.randomlyGenerateEnemy();
@@ -192,18 +225,38 @@ export default class Canvas extends Component {
     ctx.clearRect(0, 0, this.state.canvasSize.canvasWidth, this.state.canvasSize.canvasHeight);
     // console.log(`this.state.timestarted = ${Date.now() - this.state.timeWhenGameStarted}`)
     this.setState({
-      frameCount: this.state.frameCount + 1
+      frameCount: this.state.frameCount + 1,
+      score: this.state.score + 1
     });
 
-    if (this.state.frameCount % 100 === 0)      //every 4 sec generate new enemy bracket not needed
+    if (this.state.frameCount % 100 === 0) {     //every 4 sec generate new enemy
       this.randomlyGenerateEnemy();
+    }
+    if (this.state.frameCount % 75 === 0) {     //every 3 sec generate new upgrade
+      this.randomlyGenerateUpgrade();
+    }
+
+    // map through upgrade list and update
+    Object.keys(this.state.upgradeList).map((upgrade) => {
+      let thisupgrade = this.state.upgradeList[upgrade];
+      this.updateEntity(thisupgrade, ctx);
+
+      if (this.testCollisionEntity(this.state.player, thisupgrade)) {
+        this.setState({
+          score: this.state.score + 1000
+        })
+        // delete thisupgrade
+        // console.log("Player HP = " + this.state.hp)
+      }
+      return null;
+    })
     // console.log(`frame count = ${this.state.frameCount}`)
 
     Object.keys(this.state.enemyList).map((enemy) => {
       let thisenemy = this.state.enemyList[enemy];
       this.updateEntity(thisenemy, ctx);
-      this.isColliding = this.testCollisionEntity(this.state.player, thisenemy)
-      if (this.isColliding) {
+
+      if (this.testCollisionEntity(this.state.player, thisenemy)) {
         this.setState({
           hp: this.state.hp - 1
         })
@@ -216,9 +269,9 @@ export default class Canvas extends Component {
       return null;
     })
 
-    this.drawEntity(this.state.player, ctx);
+    this.drawEntity(this.props.player, ctx);
     ctx.fillText(this.state.hp + " HP", 0, 30);
-    ctx.fillText(`Score : ${this.state.frameCount}`, 200, 30);
+    ctx.fillText(`Score : ${this.state.score}`, 200, 30);
   }
   // function to reset states and 
   startNewGame = () => {
@@ -226,6 +279,7 @@ export default class Canvas extends Component {
     this.setState({
       timeWhenGameStarted: Date.now(),
       frameCount: 0,
+      score: 0,
       hp: 20,
       enemyList: {},
     })
