@@ -12,6 +12,9 @@ export default {
   getUser: function(username) {
     return axios.get("/api/users/" + username);
   },
+  updateUser: function(username, userdata) {
+    return axios.put("/api/users/" + username, userdata);
+  },
   // Deletes the User with the given username
   deleteUser: function(username) {
     return axios.delete("/api/users/" + username);

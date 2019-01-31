@@ -1,19 +1,23 @@
 import React, { Component } from "react";
+import API from "../utils/API";
 // import Entites from "./Entities.js";
 // import Inventory from "./Inventory.js";
 
 
-export default class Canvas extends Component {
+export default class Game1 extends Component {
   state = {
     username: "Sephiroth91",
     canvasSize: { canvasWidth: 640, canvasHeight: 360 },
     enemyList: {},
     upgradeList: {},
+    bulletList: {},
     player: this.props.player,
+    // hp of player to not setstate of player state object prop
     hp: 20,
     frameCount: 0,
     score: 0,
-    timeWhenGameStarted: null
+    timeWhenGameStarted: null,
+    toRemove: false,
   };
 
   // only start the timer when the component is mounted, clear on dismount and update during setinterval 
@@ -48,18 +52,18 @@ export default class Canvas extends Component {
   // called to create an enemy with random property values
   randomlyGenerateEnemy = () => {
     //Math.random() returns a number between 0 and 1
-    var x = Math.random() * 640;
-    var y = Math.random() * 360;
-    var height = 10 + Math.random() * 30;     //between 10 and 40
-    var width = 10 + Math.random() * 30;
-    var id = Math.random();
-    var spdX = 5 + Math.random() * 5;
-    var spdY = 5 + Math.random() * 5;
+    let x = Math.random() * 640;
+    let y = Math.random() * 360;
+    let height = 10 + Math.random() * 30;     //between 10 and 40
+    let width = 10 + Math.random() * 30;
+    let id = Math.random();
+    let spdX = 5 + Math.random() * 5;
+    let spdY = 5 + Math.random() * 5;
     this.enemy(id, x, y, spdX, spdY, width, height);
   }
 
   // function to construct upgrade object and update upgrade list
-  upgrade = (id, x, y, spdX, spdY, width, height) => {
+  upgrade = (id, x, y, spdX, spdY, width, height, category) => {
     let upgrades = {
       x: x,
       spdX: spdX,
@@ -69,7 +73,8 @@ export default class Canvas extends Component {
       id: id,
       width: height,
       height: width,
-      color: "orange"
+      color: "orange",
+      category: category
     };
     this.setState(prevState => ({
       upgradeList: {
@@ -78,18 +83,60 @@ export default class Canvas extends Component {
       }
     }));
   };
+  // function to construct bullet object and update bullet list
+  bullet = (id, x, y, spdX, spdY, width, height) => {
+    let bullets = {
+      x: x,
+      spdX: spdX,
+      y: y,
+      spdY: spdY,
+      name: 'E',
+      id: id,
+      width: height,
+      height: width,
+      color: "black",
+
+      timer: 0
+    };
+    this.setState(prevState => ({
+      bulletList: {
+        ...prevState.bulletList,
+        [id]: bullets,
+      }
+    }));
+  };
 
   // function to randomly generate upgrade
   randomlyGenerateUpgrade = () => {
     //Math.random() returns a number between 0 and 1
-    var x = Math.random() * 640;
-    var y = Math.random() * 360;
-    var height = 10;     //between 10 and 40
-    var width = 10;
-    var id = Math.random();
-    var spdX = 0;
-    var spdY = 0;
-    this.upgrade(id, x, y, spdX, spdY, width, height);
+    let x = Math.random() * 640;
+    let y = Math.random() * 360;
+    let height = 10;     //between 10 and 40
+    let width = 10;
+    let id = Math.random();
+    let spdX = 0;
+    let spdY = 0;
+    let category = ""
+    if (Math.random() < 0.5) {
+      category = "low"
+    } else {
+      category = "high"
+    }
+
+    this.upgrade(id, x, y, spdX, spdY, width, height, category);
+  }
+  // function to randomly generate bullet from player position
+  randomlyGenerateBullet = (player) => {
+    //Math.random() returns a number between 0 and 1
+    let x = player.x;
+    let y = player.y;
+    let height = 10;     //between 10 and 40
+    let width = 10;
+    let id = Math.random();
+    let angle = Math.random() * 360;
+    let spdX = Math.cos(angle / 180 * Math.PI) * 5;
+    let spdY = Math.sin(angle / 180 * Math.PI) * 5;
+    this.bullet(id, x, y, spdX, spdY, width, height);
   }
 
   getDistanceBetweenEntity = (entity1, entity2) => {  //return distance (number)
@@ -146,10 +193,6 @@ export default class Canvas extends Component {
     this.canvasRender.width = canvasWidth;
     this.canvasRender.height = canvasHeight;
     this.drawImg(this.canvasRender);
-  }
-  // clear the setinterval id on dismount
-  componentWillUnmount() {
-    clearInterval(this.interval)
   }
 
   // get the canvas refrence passed in and get the context to store and send to other functions
@@ -222,11 +265,12 @@ export default class Canvas extends Component {
 
   // function on the interval loop that clears and then rerenders the canvas
   update = (ctx) => {
+    this.setHighscore();
     ctx.clearRect(0, 0, this.state.canvasSize.canvasWidth, this.state.canvasSize.canvasHeight);
     // console.log(`this.state.timestarted = ${Date.now() - this.state.timeWhenGameStarted}`)
     this.setState({
       frameCount: this.state.frameCount + 1,
-      score: this.state.score + 1
+      score: this.state.score + 1,
     });
 
     if (this.state.frameCount % 100 === 0) {     //every 4 sec generate new enemy
@@ -235,23 +279,54 @@ export default class Canvas extends Component {
     if (this.state.frameCount % 75 === 0) {     //every 3 sec generate new upgrade
       this.randomlyGenerateUpgrade();
     }
+    if (this.state.frameCount % 75 === 0) {     //every 3 sec generate new bullet
+      this.randomlyGenerateBullet(this.state.player);
+    }
 
-    // map through upgrade list and update
+    // map through bullet list and render
+    Object.keys(this.state.bulletList).map((bullet) => {
+      let thisbullet = this.state.bulletList[bullet];
+      this.updateEntity(thisbullet, ctx);
+      thisbullet.timer += 1
+      if (thisbullet.timer > 400) { // 4 secs
+        delete this.state.bulletList[bullet]
+        return null;
+      }
+      // // loop through every enemy for every bullet and make sure to break the loop if deleted
+      Object.keys(this.state.enemyList).map((enemy) => {
+        if (this.testCollisionEntity(thisbullet, this.state.enemyList[enemy])) {
+          delete this.state.bulletList[bullet];
+          delete this.state.enemyList[enemy];
+          return null;
+        }
+        return null;
+      })
+      return null;
+    })
+
+    // map through upgrade list render and update
     Object.keys(this.state.upgradeList).map((upgrade) => {
       let thisupgrade = this.state.upgradeList[upgrade];
       this.updateEntity(thisupgrade, ctx);
 
       if (this.testCollisionEntity(this.state.player, thisupgrade)) {
-        this.setState({
-          score: this.state.score + 1000
-        })
+        console.log(thisupgrade.category)
+        if (thisupgrade.category === "low") {
+          this.setState({
+            score: this.state.score + 1000,
+          })
+        } else if (thisupgrade.category === "high") {
+          this.setState({
+            score: this.state.score + 10000,
+          })
+        }
         delete this.state.upgradeList[upgrade]
         // console.log("Player HP = " + this.state.hp)
       }
       return null;
     })
-    // console.log(`frame count = ${this.state.frameCount}`)
 
+    // map through enemy list and update health and game based off collision
     Object.keys(this.state.enemyList).map((enemy) => {
       let thisenemy = this.state.enemyList[enemy];
       this.updateEntity(thisenemy, ctx);
@@ -273,7 +348,8 @@ export default class Canvas extends Component {
     ctx.fillText(this.state.hp + " HP", 0, 30);
     ctx.fillText(`Score : ${this.state.score}`, 200, 30);
   }
-  // function to reset states and 
+
+  // function to reset states and enemy position
   startNewGame = () => {
     // let enemy = this.randomlyGenerateEnemy();
     this.setState({
@@ -282,46 +358,53 @@ export default class Canvas extends Component {
       score: 0,
       hp: 20,
       enemyList: {},
+      upgradeList: {},
+      bulletList: {},
     })
     this.randomlyGenerateEnemy();
     this.randomlyGenerateEnemy();
     this.randomlyGenerateEnemy();
   }
 
-  // code for drawimg ==================================
-  // const ctx = canvasID.getContext("2d");
-  //   var base_image = new Image();
-  //   base_image.src = img;
-  //   ctx.drawImage(base_image, 0, 0)
+  setHighscore = () => {
+    // console.log(this.props.username)
+    if (this.props.username) {
+      API.getUser(this.props.username)
+        .then(response => {
+          console.log("the current score = " + this.state.score)
+          console.log("the user is " + JSON.stringify(response.data))
+          if (response.data.highScore < this.state.score) {
+            API.updateUser(response.data.username, { highScore: this.state.score })
+              .then(res => {
+                // console.log("updated user is = " + JSON.stringify(res))
+              })
+          } else {
+            // console.log("You didnt Get a higher high score this time sorry :(")
+          }
+        })
+    }
+    else {
+      API.getUser(this.state.username)
+        .then(response => {
+          console.log("the user is " + JSON.stringify(response.data)  )  
+          if (response.data.highScore < this.state.score) {
+            API.updateUser(this.state.username, { highScore: this.state.score })
+              .then(res => {
+                // console.log("updated user is = " + JSON.stringify(res))
+              })
+          } else {
+            // console.log("You didnt Get a higher high score this time sorry :(")
+          }
+        })
+    }
+  }
 
-  // code for main game ===============================
-  //   Maps = function(id,imgSrc,grid){
-  // 	var self = {
-  // 		id:id,
-  // 		image:new Image(),
-  // 		width:grid[0].length * TILE_SIZE,
-  // 		height:grid.length * TILE_SIZE,
-  // 		grid:grid,
-  // 	}
-  // 	self.image.src = imgSrc;
-
-  // 	self.isPositionWall = function(pt){
-  // 		var gridX = Math.floor(pt.x / TILE_SIZE);
-  // 		var gridY = Math.floor(pt.y / TILE_SIZE);
-  // 		if(gridX < 0 || gridX >= self.grid[0].length)
-  // 			return true;
-  // 		if(gridY < 0 || gridY >= self.grid.length)
-  // 			return true;
-  // 		return self.grid[gridY][gridX];
-  // 	}
-
-  // 	self.draw = function(){
-  // 		var x = WIDTH/2 - player.x;
-  // 		var y = HEIGHT/2 - player.y;
-  // 		ctx.drawImage(self.image,0,0,self.image.width,self.image.height,x,y,self.image.width*2,self.image.height*2);
-  // 	}
-  // 	return self;
-  // }
+  // clear the setinterval id on dismount and other end of game functions
+  componentWillUnmount() {
+    // this.setHighscore();
+    clearInterval(this.interval);
+  }
+  componentDidUpdate() {}
 
   render() {
     return (

@@ -47,6 +47,8 @@ class App extends Component {
         <Switch>
           <Route exact path="/" component={Home}
           />
+          <Route exact path="/home" render={() => <Home />}
+          />
           <Route path="/signin" render={() => <LoginForm updateUser={this.updateUser} />}
           />
           <Route path="/signup" render={() => <Signup updateUser={this.updateUser} />}
@@ -61,6 +63,7 @@ class App extends Component {
             width: 20,
             height: 20,
           }}
+          username={this.state.username}
           />}
           />
         </Switch>

@@ -38,8 +38,7 @@ router.post('/logout', (req, res) => {
 })
 
 // Matches with "/api/users/:username"
-router
-    .route("/:username")
+router.route("/:username")
     .get(usersController.findByName)
     .put(usersController.update)
     .delete(usersController.remove);

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import "materialize-css/dist/css/materialize.min.css";
 import '../App.css';
 import { Navbar, NavItem} from 'react-materialize'
@@ -37,8 +38,8 @@ class Nav extends Component {
                     {/* if logged in show this on navbar :else */}
                     {loggedIn ? (
                         <>
-                            <NavItem href="/" className="brand">
-                                <i className="fas fa-gamepad">Rackers</i></NavItem>
+                            <Link to="/home" className="brand">
+                                <i className="fas fa-gamepad">Rackers</i></Link>
                             <NavItem href="#" className="btn btn-link text-secondary" onClick={this.logout}>
                                 <span className="text-secondary">logout</span></NavItem>
                         </>

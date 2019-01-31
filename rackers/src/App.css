@@ -123,3 +123,9 @@ footer i {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 } */
+
+
+.side-nav .brand {
+  height: -webkit-fill-available;
+  display: inline-block;
+}
