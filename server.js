@@ -39,18 +39,18 @@ app.use(passport.initialize());
 
 // create static assets (usually on heroku)
 if (process.env.NODE_ENV === "production") {
- app.use(express.static(path.join(__dirname, '../build')));
+ app.use(express.static(path.join(__dirname, './build')));
 };
 
 // let express use the required routes.
 app.use(routes)
 
 /* === Express 404 error handler === */
-app.use(function (req, res, next) {
-    var err = new Error('404 in Server.js, route Not Found');
-    err.status = 404;
-    next(err);
-});
+// app.use(function (req, res, next) {
+//     var err = new Error('404 in Server.js, route Not Found');
+//     err.status = 404;
+//     next(err);
+// });
 
 /* === Server-Side Authentication w/passport.js on our Model === */
 const User = require('./models/user');
