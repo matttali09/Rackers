@@ -17,6 +17,20 @@ module.exports = {
             .then(dbModel => res.json(dbModel))
             .catch(err => res.status(422).json(err));
     },
+    findAllbyHighScore2: function (req, res) {
+        User
+            .find(req.query)
+            .sort({ highScore2: -1 })
+            .then(dbModel => res.json(dbModel))
+            .catch(err => res.status(422).json(err));
+    },
+    findAllbyHighScore3: function (req, res) {
+        User
+            .find(req.query)
+            .sort({ highScore3: -1 })
+            .then(dbModel => res.json(dbModel))
+            .catch(err => res.status(422).json(err));
+    },
     findByName: function (req, res) {
         User
             .findOne({username: req.params.username})
@@ -26,14 +40,15 @@ module.exports = {
 
     // create function for users signing up.
     create: function (req, res, next) {
-        console.log('user signup');
-        console.log("req.body before signup" + JSON.stringify(req.body))
+        // console.log('user signup');
+        // console.log("req.body before signup" + JSON.stringify(req.body))
         User.register(new User({
             username: req.body.username,
             name: req.body.name,
         }), req.body.password, (err, user) => {
             if (err) {
-                console.log('User.js post error: ', err)
+                // console.log('User.js post error: ', err)
+                throw(err)
             } 
             else {
                 passport.authenticate('local')(req, res, () => {
@@ -51,7 +66,7 @@ module.exports = {
     },
 
     signin: function (req, res, next) {
-        console.log("/signin controller req = " + JSON.stringify(req.body));
+        // console.log("/signin controller req = " + JSON.stringify(req.body));
         req.session.save((err) => {
             if (err) {
                 return next(err);

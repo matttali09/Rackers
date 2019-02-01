@@ -13,9 +13,9 @@ class Nav extends Component {
 
     logout = event => {
         event.preventDefault()
-        console.log('logging out')
+        // console.log('logging out')
         API.signOutUser().then(response => {
-            console.log(response.data)
+            // console.log(response.data)
             if (response.status === 200) {
                 this.props.updateUser({
                     loggedIn: false,
@@ -23,14 +23,14 @@ class Nav extends Component {
                 })
             }
         }).catch(error => {
-            console.log('Logout error')
+            // console.log('Logout error')
         })
     }
 
     render() {
         const loggedIn = this.props.loggedIn;
-        console.log('navbar render, props: ')
-        console.log(this.props);
+        // console.log('navbar render, props: ')
+        // console.log(this.props);
 
         return (
             <header className="App-header" id="nav-container">

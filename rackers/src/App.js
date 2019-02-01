@@ -6,6 +6,8 @@ import Signup from './pages/sign-up'
 import LoginForm from './pages/login-form'
 import Home from './pages/home'
 import Game1 from './pages/Game1'
+import Game2 from './pages/Game2'
+import Game3 from './pages/Game3'
 import Navbar from './components/navbar'
 import Footer from './components/footer'
 
@@ -26,8 +28,8 @@ class App extends Component {
   getUsers() {
     API.getUsers()
       .then(response => {
-        console.log('Get user response: ')
-        console.log(response.data)
+        // console.log('Get user response: ')
+        // console.log(response.data)
       }
       )
   }
@@ -74,7 +76,7 @@ class App extends Component {
             username={this.state.username}
           />}
           />
-          <Route path="/game2" render={() => <Game1 player={{
+          <Route path="/game2" render={() => <Game2 player={{
             type: "player",
             x: 50,
             spdX: 30,
@@ -95,7 +97,7 @@ class App extends Component {
             username={this.state.username}
           />}
           />
-          <Route path="/game3" render={() => <Game1 player={{
+          <Route path="/game3" render={() => <Game3 player={{
             type: "player",
             x: 50,
             spdX: 30,

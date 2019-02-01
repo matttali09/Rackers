@@ -8,6 +8,12 @@ export default {
   getUsersbyHighscore: function() {
     return axios.get("/api/users/high-score");
   },
+  getUsersbyHighscore2: function() {
+    return axios.get("/api/users/high-score2");
+  },
+  getUsersbyHighscore3: function() {
+    return axios.get("/api/users/high-score3");
+  },
   // Gets the User with the given username
   getUser: function(username) {
     return axios.get("/api/users/" + username);

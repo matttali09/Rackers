@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-// import Entites from "./Entities.js";
-// import Inventory from "./Inventory.js";
+import API from "../utils/API"
 
 
 export default class Canvas extends Component {
@@ -23,6 +22,22 @@ export default class Canvas extends Component {
     this.setState({
       timeWhenGameStarted: Date.now()
     })
+  }
+  // function that starts the game up when the component is loaded
+  componentDidMount() {
+    this.startTimer();
+    this.getMousePosition(this.props.player);
+    this.randomlyGenerateEnemy();
+    this.randomlyGenerateEnemy();
+    this.randomlyGenerateEnemy();
+    const { canvasWidth, canvasHeight } = this.state.canvasSize;
+    this.canvasRender.width = canvasWidth;
+    this.canvasRender.height = canvasHeight;
+    this.drawImg(this.canvasRender);
+  }
+  // clear the setinterval id on dismount
+  componentWillUnmount() {
+    clearInterval(this.interval)
   }
 
   // function to construct enemy object and update enemy list
@@ -169,23 +184,6 @@ export default class Canvas extends Component {
     }
   }
 
-  // function that starts the game up when the component is loaded
-  componentDidMount() {
-    this.startTimer();
-    this.getMousePosition(this.props.player);
-    this.randomlyGenerateEnemy();
-    this.randomlyGenerateEnemy();
-    this.randomlyGenerateEnemy();
-    const { canvasWidth, canvasHeight } = this.state.canvasSize;
-    this.canvasRender.width = canvasWidth;
-    this.canvasRender.height = canvasHeight;
-    this.drawImg(this.canvasRender);
-  }
-  // clear the setinterval id on dismount
-  componentWillUnmount() {
-    clearInterval(this.interval)
-  }
-
   // get the canvas refrence passed in and get the context to store and send to other functions
   drawImg(canvasID) {
     const ctx = canvasID.getContext("2d");
@@ -256,7 +254,7 @@ export default class Canvas extends Component {
 
   // function on the interval loop that clears and then rerenders the canvas
   update = (ctx) => {
-    this.setHighscore();
+    this.setHighscore2();
     ctx.clearRect(0, 0, this.state.canvasSize.canvasWidth, this.state.canvasSize.canvasHeight);
 
     this.setState({

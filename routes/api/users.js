@@ -2,11 +2,15 @@ const router = require("express").Router();
 const usersController = require("../../controller/usersController");
 const passport = require("passport");
 
-// Matches with "/api/users" this is for all users in database
+// Matches with "/api/users" this is for all users in database by descending wins or highscores
 router.route("/")
     .get(usersController.findAll)
 router.route("/high-score")
     .get(usersController.findAllbyHighScore)
+router.route("/high-score2")
+    .get(usersController.findAllbyHighScore2)
+router.route("/high-score3")
+    .get(usersController.findAllbyHighScore3)
 
 
 // Matches with "/api/users/current" check route for current user 

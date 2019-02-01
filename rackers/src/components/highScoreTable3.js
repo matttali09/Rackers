@@ -11,7 +11,7 @@ class highScoreTable extends Component {
     }
     
     getUsersbyHighscore = () => {
-        API.getUsersbyHighscore().then(response => {
+        API.getUsersbyHighscore3().then(response => {
             // console.log('HighScore user response: ')
             // console.log(response.data)
             this.setState({
@@ -38,7 +38,7 @@ class highScoreTable extends Component {
                         <tr key={user._id}>
                             <td key={index + 500} className="ranking-text">{index + 1}.</td>
                             <td key={user.username} className="username-text">{user.username}</td>
-                            <td key={user.highScore} className="score-text">{user.highScore}</td>
+                            <td key={user.highScore3} className="score-text">{user.highScore3}</td>
                         </tr>
                     )}
                 </tbody>
