@@ -13,7 +13,7 @@ class Footer extends Component {
               <p className="grey-text text-lighten-1" />
               We are a Central FL based team of web developers and wanted to
               create an application that would allow for gamers to come together
-              and have a platform to play canvas and react games. Want to add
+              and have a platform to play & compete on canvas / react games. Want to add
               your game?:{" "}
               <a href="https://github.com/matttali09/Rackers">Rackers Community</a>
             </div>
