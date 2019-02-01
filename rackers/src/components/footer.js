@@ -11,9 +11,11 @@ class Footer extends Component {
             <div className="col s12 m8">
               <h6 className="grey-text text-lighten-1">About Rackers</h6>
               <p className="grey-text text-lighten-1" />
-              We are a team of Central FL based web developers and wanted to
+              We are a Central FL based team of web developers and wanted to
               create an application that would allow for gamers to come together
-              and have a platform to play canvas and react games.
+              and have a platform to play & compete on canvas / react games. Want to add
+              your game?:{" "}
+              <a href="https://github.com/matttali09/Rackers">Rackers Community</a>
             </div>
             <div className="col s12 m4">
               <h6 className="grey-text text-lighten-1">Team</h6>
