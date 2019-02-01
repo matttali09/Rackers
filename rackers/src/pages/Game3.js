@@ -188,7 +188,8 @@ export default class Game1 extends Component {
     componentDidMount() {
         this.startTimer();
         // this.getMousePosition(this.props.player);
-        this.getButtonPress(this.props.player);
+        this.getLeftClick(this.props.player);
+        this.getRightClick(this.props.player);
         this.getKeyDown(this.props.player);
         this.getKeyUp(this.props.player);
         this.randomlyGenerateEnemy();
@@ -221,12 +222,26 @@ export default class Game1 extends Component {
 
         }
     }
-    getButtonPress = (player) => {
+    getLeftClick = (player) => {
         document.onmousedown = () => {
             if (player.atkCounter > 25) {
                 this.randomlyGenerateBullet();
                 player.atkCounter = 0;
             }
+        }
+    }
+    // function to listen for the players left click super attack, not working but will shoot one
+    getRightClick = (player) => {
+        document.oncontextmenu = (event) => {
+            if (player.atkCounter > 50) {
+
+                for (let angle; angle < 360; angle++) {
+                    this.generateBullet(player, angle);
+                }
+
+                player.atkCounter = 0;
+            }
+            event.preventDefault();
         }
     }
     getKeyDown = (player) => {

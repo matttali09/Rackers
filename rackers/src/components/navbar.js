@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import "materialize-css/dist/css/materialize.min.css";
 import '../App.css';
-import { Navbar, NavItem} from 'react-materialize'
+// import { NavItem, SideNav} from 'react-materialize'
 import API from '../utils/API'
 
 class Nav extends Component {
@@ -34,32 +34,29 @@ class Nav extends Component {
 
         return (
             <header className="App-header" id="nav-container">
-                <Navbar>
+                <nav>
                     {/* if logged in show this on navbar :else */}
                     {loggedIn ? (
                         <>
-                            <Link to="/home" className="brand">
+                            <Link to="/home" className="btn brand waves-effect">
                                 <i className="fas fa-gamepad">Rackers</i></Link>
-                            <NavItem href="#" className="btn btn-link text-secondary" onClick={this.logout}>
-                                <span className="text-secondary">logout</span></NavItem>
+                            <Link to="/signin" className="btn btn-link waves-effect text-secondary center" onClick={this.logout}>
+                                <span className="text-secondary">logout</span></Link>
                         </>
                     ) : (
                             <>
-                                <NavItem href="/" className="brand">
+                                <Link to="/signin" className="btn brand waves-effect">
                                     <i className="fas fa-gamepad">Rackers</i>
-                                </NavItem>
-                                <NavItem href="/" className="btn btn-link text-secondary">
-                                    <span className="text-secondary">home</span>
-                                </NavItem>
-                                <NavItem href="/signin" className="btn btn-link text-secondary">
-                                    <span className="text-secondary">login</span>
-                                </NavItem>
-                                <NavItem href="/signup" className="btn btn-link">
+                                </Link>
+                                <Link to="/signup" className="btn btn-link waves-effect center">
                                     <span className="text-secondary">sign up</span>
-                                </NavItem>
+                                </Link>
+                                <Link to="/signin" className="btn btn-link waves-effect text-secondary center">
+                                    <span className="text-secondary">login</span>
+                                </Link>
                             </>
                         )}
-                </Navbar>
+                </nav>
             </header >
         );
 

@@ -111,7 +111,6 @@ export default class Game1 extends Component {
 
   // function that starts the game up when the component is loaded
   componentDidMount() {
-    this.startTimer();
     this.getMousePosition(this.props.player);
     this.getRightClick(this.props.player);
     this.getLeftClick(this.props.player);
@@ -345,7 +344,7 @@ export default class Game1 extends Component {
 
   // function on the interval loop that clears and then rerenders the canvas
   update = (ctx, player) => {
-    // this.setHighscore();
+    this.setHighscore();
     ctx.clearRect(0, 0, this.state.canvasSize.canvasWidth, this.state.canvasSize.canvasHeight);
     // console.log(`this.state.timestarted = ${Date.now() - this.state.timeWhenGameStarted}`)
 

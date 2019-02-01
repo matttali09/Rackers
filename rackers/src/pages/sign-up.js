@@ -16,8 +16,8 @@ class Signup extends Component {
 		})
 	}
 	handleSubmit = event => {
-		console.log('sign-up handleSubmit, username: ')
-		console.log(this.state.username)
+		// console.log('sign-up handleSubmit, username: ')
+		// console.log(this.state.username)
 		event.preventDefault()
 		const formData = {
 			username: this.state.username,
@@ -29,13 +29,13 @@ class Signup extends Component {
 			.then(response => {
 				console.log(response)
 				if (!response.data.errmsg) {
-					console.log('successful signup')
+					// console.log('successful signup')
 					this.props.updateUser({
                         loggedIn: true,
                         username: response.data.username,
                     })
-					this.setState({ //redirect to login page
-						redirectTo: '/'
+					this.setState({ //redirect to home page
+						redirectTo: '/home'
 					})
 				} else {
 					console.log('username already taken')
@@ -53,7 +53,7 @@ class Signup extends Component {
 			return <Redirect to={{ pathname: this.state.redirectTo }} />
 		} else {
 			return (
-				<div className="container mainContent">
+				<div className="container mainContent form-container">
 				<center>
 					<h6 className="center text-28"><i className="material-icons">account_box</i> Sign up </h6></center>
 					<center>

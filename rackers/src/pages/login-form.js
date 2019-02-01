@@ -35,7 +35,7 @@ class LoginForm extends Component {
           });
           // update the state to redirect to home
           this.setState({
-            redirectTo: "/"
+            redirectTo: "/home"
           });
         }
       })
@@ -50,7 +50,7 @@ class LoginForm extends Component {
       return <Redirect to={{ pathname: this.state.redirectTo }} />;
     } else {
       return (
-        <div className="container mainContent">
+        <div className="container mainContent form-container">
           <center>
             <h6 className="center text-28">
               <i className="material-icons">check_box</i> Login
