@@ -2,11 +2,11 @@
 const express = require("express");
 const session = require("express-session");
 const passport = require("passport");
-const logger = require('morgan');
+// const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const LocalStrategy = require('passport-local').Strategy;
-const flash = require('connect-flash');
+// const flash = require('connect-flash');
 const mongoose = require("mongoose");
 const routes = require("./routes");
 
@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 
 // ============================ MIDDLEWARE
-app.use(logger('dev'));
+// app.use(logger('dev'))
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -31,7 +31,7 @@ app.use(session({
     cookie: { maxAge: 60000 }
 }));
 app.use(passport.initialize());
-app.use(flash());
+// app.use(flash());
 
 // Static directory
 app.use(express.static("server-assets"));
