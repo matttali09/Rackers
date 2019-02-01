@@ -28,4 +28,4 @@ The third is called Mine Dropper where the user controls the player square are W
                 upgrades to increase attack speed, and orange to increase score by 1000!
                 Try to stay alive as long as possible!
 
-![Mine Dropper](assets/images/gif4.gif?PNG=true "Mine Dropper")
+![Mine Dropper](server-assets/images/gif4.gif?PNG=true "Mine Dropper")
