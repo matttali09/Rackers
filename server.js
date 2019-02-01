@@ -35,7 +35,7 @@ app.use(passport.initialize());
 // app.use(flash());
 
 // Static directory
-// app.use(express.static("server-assets"));
+app.use(express.static("server-assets"));
 
 // create static assets (usually on heroku)
 if (process.env.NODE_ENV === "production") {
