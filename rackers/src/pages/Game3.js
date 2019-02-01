@@ -39,10 +39,7 @@ export default class Game1 extends Component {
       id: id,
       width: height,
       height: width,
-      color: "red",
-      aimAngle: 0,
-      atkSpd: 1,
-      attackCounter: 0,
+      color: "red"
     };
     this.setState(prevState => ({
       enemyList: {
@@ -109,23 +106,6 @@ export default class Game1 extends Component {
     }));
   };
 
-  // function that starts the game up when the component is loaded
-  componentDidMount() {
-    this.startTimer();
-    this.getMousePosition(this.props.player);
-    this.getRightClick(this.props.player);
-    this.getLeftClick(this.props.player);
-    this.getKeyDown(this.props.player);
-    this.getKeyUp(this.props.player);
-    this.randomlyGenerateEnemy();
-    this.randomlyGenerateEnemy();
-    this.randomlyGenerateEnemy();
-    const { canvasWidth, canvasHeight } = this.state.canvasSize;
-    this.canvasRender.width = canvasWidth;
-    this.canvasRender.height = canvasHeight;
-    this.drawImg(this.canvasRender);
-  }
-
   // function to randomly generate upgrade
   randomlyGenerateUpgrade = () => {
     //Math.random() returns a number between 0 and 1
@@ -146,22 +126,34 @@ export default class Game1 extends Component {
       category = "high"
       color = "purple"
     }
+
     this.upgrade(id, x, y, spdX, spdY, width, height, category, color);
   }
   // function to randomly generate bullet from player position
-  generateBullet = (actor, aimAngle) => {
+  randomlyGenerateBullet = (actor, aimAngle) => {
     //Math.random() returns a number between 0 and 1
-    let x = actor.x;
-    let y = actor.y;
+    let x = this.state.player.x;
+    let y = this.state.player.y;
     let height = 10;     //between 10 and 40
     let width = 10;
     let id = Math.random();
-    let angle = aimAngle;
-    let spdX = Math.cos(angle / 180 * Math.PI) * 5;
+    let angle = this.state.player.aimAngle;
+    let spdX = Math.sin(angle / 180 * Math.PI) * 5;
     let spdY = Math.sin(angle / 180 * Math.PI) * 5;
     this.bullet(id, x, y, spdX, spdY, width, height);
   }
 
+  getDistanceBetweenEntity = (entity1, entity2) => {  //return distance (number)
+    // clean for state catch up second entity or something is enemy who may not always be there at game start.
+    if (entity2) {
+      let vx = entity1.x - entity2.x;
+      let vy = entity1.y - entity2.y;
+      return Math.sqrt(vx * vx + vy * vy);
+    }
+    else {
+      return null;
+    }
+  }
   testCollisionEntity = (entity1, entity2) => {       //return if colliding (true/false)
     if (entity2) {
       let rect1 = {
@@ -194,6 +186,22 @@ export default class Game1 extends Component {
     }
   }
 
+  // function that starts the game up when the component is loaded
+  componentDidMount() {
+    this.startTimer();
+    // this.getMousePosition(this.props.player);
+    this.getButtonPress(this.props.player);
+    this.getKeyDown(this.props.player);
+    this.getKeyUp(this.props.player);
+    this.randomlyGenerateEnemy();
+    this.randomlyGenerateEnemy();
+    this.randomlyGenerateEnemy();
+    const { canvasWidth, canvasHeight } = this.state.canvasSize;
+    this.canvasRender.width = canvasWidth;
+    this.canvasRender.height = canvasHeight;
+    this.drawImg(this.canvasRender);
+  }
+
   // get the canvas refrence passed in and get the context to store and send to other functions
   drawImg(canvasID) {
     const ctx = canvasID.getContext("2d");
@@ -204,37 +212,23 @@ export default class Game1 extends Component {
   }
 
   // functions for player control
-  // get mouse position and atan it to get the angle, 8 is harcoded version
   getMousePosition = (player) => {
-    document.onmousemove = function (event) {
-      let mouseX = event.clientX - 8;
-      let mouseY = event.clientY - 8;
+    document.onmousemove = function (mouse) {
+      let mouseX = mouse.clientX - 8;
+      let mouseY = mouse.clientY - 8;
       mouseX -= player.x;
       mouseY -= player.y;
-      player.aimAngle = Math.atan2(mouseY, mouseX) / Math.PI * 180;
+     
+      player.aimAngle = Math.atan2(mouseY,mouseX) / Math.PI * 180;
+      
     }
   }
-  // function to listen for a players mouse
-  getLeftClick = (player) => {
+  getButtonPress = (player) => {
     document.onmousedown = () => {
       if (player.atkCounter > 25) {
-        this.generateBullet(player, player.aimAngle);
+        this.randomlyGenerateBullet();
         player.atkCounter = 0;
       }
-    }
-  }
-  // function to listen for the players left click super attack, not working but will shoot one
-  getRightClick = (player) => {
-    document.oncontextmenu = (event) => {
-      if (player.atkCounter > 50) {
-
-        for (let angle; angle < 360; angle++) {
-          this.generateBullet(player, angle);
-        }
-
-        player.atkCounter = 0;
-      }
-      event.preventDefault();
     }
   }
   getKeyDown = (player) => {
@@ -282,25 +276,7 @@ export default class Game1 extends Component {
       player.y = 360 - player.height / 2;
   }
 
-  // // takes object and generates a bullet every 1 sec, not working
-  // performAttack = (actor) => {
-  //   if (actor.attackCounter > 25) {   //every 1 sec
-  //     actor.attackCounter = 0;
-  //     generateBullet(actor);
-  //   }
-  // }
-
-  // // same for special attack
-  // performSpecialAttack = (actor) => {
-  //   if (actor.attackCounter > 50) {   //every 1 sec
-  //     actor.attackCounter = 0;
-  //     generateBullet(actor, actor.aimAngle - 20);
-  //     generateBullet(actor, actor.aimAngle);
-  //     generateBullet(actor, actor.aimAngle + 20);
-  //   }
-  // }
-
-  // how other objects besides player are drawn
+  // how other objects are drawn
   updateEntity = (something, ctx) => {
     if (something) {
       this.updateEntityPosition(something)
@@ -310,7 +286,6 @@ export default class Game1 extends Component {
       return null;
     }
   }
-  // update the x and y coordinates of object passed to it
   updateEntityPosition = (something) => {
     if (something) {
       something.x += something.spdX;
@@ -330,7 +305,8 @@ export default class Game1 extends Component {
       return null;
     }
   }
-  // draws an object to the canvas
+  
+
   drawEntity = (something, ctx) => {
     if (something) {
       ctx.save();
@@ -348,7 +324,7 @@ export default class Game1 extends Component {
     // this.setHighscore();
     ctx.clearRect(0, 0, this.state.canvasSize.canvasWidth, this.state.canvasSize.canvasHeight);
     // console.log(`this.state.timestarted = ${Date.now() - this.state.timeWhenGameStarted}`)
-
+    
     this.setState({
       frameCount: this.state.frameCount + 1,
       score: this.state.score + 1,
@@ -363,12 +339,12 @@ export default class Game1 extends Component {
 
     player.atkCounter += 1
 
-    // map through bullet list and render, increase the bullets timer, delete at 400
+    // map through bullet list and render
     Object.keys(this.state.bulletList).map((bullet) => {
       let thisbullet = this.state.bulletList[bullet];
       this.updateEntity(thisbullet, ctx);
       thisbullet.timer += 1
-      if (thisbullet.timer > 200) { // 4 secs
+      if (thisbullet.timer > 400) { // 4 secs
         delete this.state.bulletList[bullet]
         return null;
       }
@@ -390,6 +366,7 @@ export default class Game1 extends Component {
       this.updateEntity(thisupgrade, ctx);
 
       if (this.testCollisionEntity(this.state.player, thisupgrade)) {
+        console.log(thisupgrade.category)
         if (thisupgrade.category === "low") {
           this.setState({
             score: this.state.score + 1000,
@@ -398,6 +375,7 @@ export default class Game1 extends Component {
           player.atkSpd += 1;
         }
         delete this.state.upgradeList[upgrade]
+        // console.log("Player HP = " + this.state.hp)
       }
       return null;
     })
@@ -415,6 +393,7 @@ export default class Game1 extends Component {
           console.log(`You Lost, You Survived for ${Date.now() - this.state.timeWhenGameStarted} ms.`);
           this.startNewGame()
         }
+        // console.log("Player HP = " + this.state.hp)
       }
       return null;
     })
@@ -427,6 +406,7 @@ export default class Game1 extends Component {
 
   // function to reset states and enemy position
   startNewGame = () => {
+    // let enemy = this.randomlyGenerateEnemy();
     this.setState({
       timeWhenGameStarted: Date.now(),
       frameCount: 0,
@@ -441,12 +421,13 @@ export default class Game1 extends Component {
     this.randomlyGenerateEnemy();
   }
 
-  // function to send to user highscore to the database
   setHighscore = () => {
     if (this.props.username) {
       // might use
       API.getUser(this.props.username)
         .then(response => {
+          // console.log("the current score = " + this.state.score)
+          console.log("the user is " + JSON.stringify(response.data))
           if (response.data.highScore < this.state.score) {
             console.log(`response.data.highscore was higher than the state score ${response.data.highScore} < ${this.state.score}`)
             API.updateUser(response.data.username, { highScore: this.state.score })
@@ -458,6 +439,7 @@ export default class Game1 extends Component {
     else {
       API.getUser(this.state.username)
         .then(response => {
+          console.log("the user is " + JSON.stringify(response.data))
           if (response.data.highScore < this.state.score) {
             API.updateUser(this.state.username, { highScore: this.state.score })
               .then(res => {
@@ -490,3 +472,5 @@ export default class Game1 extends Component {
     );
   }
 }
+
+// mine shooter

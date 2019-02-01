@@ -355,3 +355,5 @@ export default class Canvas extends Component {
     );
   }
 }
+
+// collect the dots

@@ -54,6 +54,7 @@ class App extends Component {
           <Route path="/signup" render={() => <Signup updateUser={this.updateUser} />}
           />
           <Route path="/game1" render={() => <Game1 player={{
+            type: "player",
             x: 50,
             spdX: 30,
             y: 40,
@@ -62,8 +63,15 @@ class App extends Component {
             color: "green",
             width: 20,
             height: 20,
+            atkSpd: 1,
+            atkCounter: 0,
+            pressingDown: false,
+            pressingUp: false,
+            pressingLeft: false,
+            pressingRight: false,
+            aimAngle: 0,
           }}
-          username={this.state.username}
+            username={this.state.username}
           />}
           />
         </Switch>
