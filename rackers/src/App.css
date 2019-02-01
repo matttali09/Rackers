@@ -131,6 +131,12 @@ tr {
 .leader-board {
   background-color: firebrick;
 }
+.leader-board2 {
+  background-color: forestgreen;
+}
+.leader-board3 {
+  background-color: purple;
+}
 .modal .modal-footer .btn-flat {
   background: #2bbbad;
 }

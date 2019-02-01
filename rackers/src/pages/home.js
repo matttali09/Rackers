@@ -34,7 +34,7 @@ class Home extends Component {
                 className="col s12 m4"
                 style={imageStyle}
                 src="./images/game1.png"
-                alt="Game 1"
+                alt="Survival Mode!"
                 href="/game1"
               />
             </Link>
@@ -74,8 +74,8 @@ class Home extends Component {
               <em>be sure to center the game on your screen</em>
               </p>
               <Modal
-                header='Survival Mode LeaderBoard'
-                trigger={<Button className="leader-board waves-effect waves-effect-dark">Survival Mode LeaderBoard</Button>}>
+                header='Collect the Dots LeaderBoard'
+                trigger={<Button className="leader-board2 waves-effect waves-effect-dark">Collect the Dots LeaderBoard</Button>}>
                 <HighScoreTable2 />
               </Modal>
             </div>
@@ -100,8 +100,8 @@ class Home extends Component {
               Try to stay alive as long as possible!
               </p>
               <Modal
-                header='Survival Mode LeaderBoard'
-                trigger={<Button className="leader-board waves-effect waves-effect-dark">Survival Mode LeaderBoard</Button>}>
+                header='Mine Dropper LeaderBoard'
+                trigger={<Button className="leader-board3 waves-effect waves-effect-dark">Mine Dropper LeaderBoard</Button>}>
                 <HighScoreTable3 />
               </Modal>
             </div>
