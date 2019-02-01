@@ -39,7 +39,7 @@ app.use(passport.initialize());
 
 // create static assets (usually on heroku)
 if (process.env.NODE_ENV === "production") {
- app.use(express.static(path.join(__dirname, '../rackers/build')));
+ app.use(express.static(path.join(__dirname, './rackers/build')));
 };
 
 // let express use the required routes.
