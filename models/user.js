@@ -11,6 +11,8 @@ const userSchema = new Schema({
   wins: { type: Number, default: 0 },
   losses: { type: Number, default: 0 },
   highScore: { type: Number, default: 0 },
+  highScore2: { type: Number, default: 0 },
+  highScore3: { type: Number, default: 0 },
   date: { type: Date, default: Date.now }
 });
 

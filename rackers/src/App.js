@@ -74,6 +74,48 @@ class App extends Component {
             username={this.state.username}
           />}
           />
+          <Route path="/game2" render={() => <Game1 player={{
+            type: "player",
+            x: 50,
+            spdX: 30,
+            y: 40,
+            spdY: 5,
+            name: 'P',
+            color: "green",
+            width: 20,
+            height: 20,
+            atkSpd: 1,
+            atkCounter: 0,
+            pressingDown: false,
+            pressingUp: false,
+            pressingLeft: false,
+            pressingRight: false,
+            aimAngle: 0,
+          }}
+            username={this.state.username}
+          />}
+          />
+          <Route path="/game3" render={() => <Game1 player={{
+            type: "player",
+            x: 50,
+            spdX: 30,
+            y: 40,
+            spdY: 5,
+            name: 'P',
+            color: "green",
+            width: 20,
+            height: 20,
+            atkSpd: 1,
+            atkCounter: 0,
+            pressingDown: false,
+            pressingUp: false,
+            pressingLeft: false,
+            pressingRight: false,
+            aimAngle: 0,
+          }}
+            username={this.state.username}
+          />}
+          />
         </Switch>
         <Footer />
       </div>

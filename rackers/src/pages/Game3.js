@@ -130,7 +130,7 @@ export default class Game1 extends Component {
     this.upgrade(id, x, y, spdX, spdY, width, height, category, color);
   }
   // function to randomly generate bullet from player position
-  randomlyGenerateBullet = (actor, aimAngle) => {
+  randomlyGenerateBullet = () => {
     //Math.random() returns a number between 0 and 1
     let x = this.state.player.x;
     let y = this.state.player.y;
@@ -138,7 +138,7 @@ export default class Game1 extends Component {
     let width = 10;
     let id = Math.random();
     let angle = this.state.player.aimAngle;
-    let spdX = Math.sin(angle / 180 * Math.PI) * 5;
+    let spdX = Math.sin(angle / 180 * Math.PI) * 5; // intentional for mine game
     let spdY = Math.sin(angle / 180 * Math.PI) * 5;
     this.bullet(id, x, y, spdX, spdY, width, height);
   }
@@ -321,7 +321,7 @@ export default class Game1 extends Component {
 
   // function on the interval loop that clears and then rerenders the canvas
   update = (ctx, player) => {
-    // this.setHighscore();
+    this.setHighscore3();
     ctx.clearRect(0, 0, this.state.canvasSize.canvasWidth, this.state.canvasSize.canvasHeight);
     // console.log(`this.state.timestarted = ${Date.now() - this.state.timeWhenGameStarted}`)
     
@@ -421,16 +421,15 @@ export default class Game1 extends Component {
     this.randomlyGenerateEnemy();
   }
 
-  setHighscore = () => {
+  // function to send to user highscore to the database
+  setHighscore3 = () => {
     if (this.props.username) {
       // might use
       API.getUser(this.props.username)
         .then(response => {
-          // console.log("the current score = " + this.state.score)
-          console.log("the user is " + JSON.stringify(response.data))
-          if (response.data.highScore < this.state.score) {
+          if (response.data.highScore3 < this.state.score) {
             console.log(`response.data.highscore was higher than the state score ${response.data.highScore} < ${this.state.score}`)
-            API.updateUser(response.data.username, { highScore: this.state.score })
+            API.updateUser(response.data.username, { highScore3: this.state.score })
               .then(res => {
               })
           }
@@ -439,9 +438,8 @@ export default class Game1 extends Component {
     else {
       API.getUser(this.state.username)
         .then(response => {
-          console.log("the user is " + JSON.stringify(response.data))
-          if (response.data.highScore < this.state.score) {
-            API.updateUser(this.state.username, { highScore: this.state.score })
+          if (response.data.highScore3 < this.state.score) {
+            API.updateUser(this.state.username, { highScore3: this.state.score })
               .then(res => {
               })
           } else {
@@ -453,7 +451,6 @@ export default class Game1 extends Component {
 
   // clear the setinterval id on dismount and other end of game functions
   componentWillUnmount() {
-    // this.setHighscore();
     clearInterval(this.interval);
   }
   componentDidUpdate() { }
@@ -473,4 +470,4 @@ export default class Game1 extends Component {
   }
 }
 
-// mine shooter
+// mine drooper

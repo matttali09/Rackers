@@ -256,8 +256,9 @@ export default class Canvas extends Component {
 
   // function on the interval loop that clears and then rerenders the canvas
   update = (ctx) => {
+    this.setHighscore();
     ctx.clearRect(0, 0, this.state.canvasSize.canvasWidth, this.state.canvasSize.canvasHeight);
-    // console.log(`this.state.timestarted = ${Date.now() - this.state.timeWhenGameStarted}`)
+
     this.setState({
       frameCount: this.state.frameCount + 1,
       score: this.state.score + 1
@@ -273,30 +274,15 @@ export default class Canvas extends Component {
       this.randomlyGenerateBullet(this.state.player);
     }
 
-    // map through upgrade list and render
-    // Object.keys(this.state.bulletList).map((upgrade) => {
-    //   let thisupgrade = this.state.upgradeList[upgrade];
-    //   this.updateEntity(thisupgrade, ctx);
-
-    //   if (this.testCollisionEntity(this.state.player, thisupgrade)) {
-    //     this.setState({
-    //       score: this.state.score + 1000
-    //     })
-    //     delete this.state.upgradeList[upgrade]
-    //   }
-    //   return null;
-    // })
     // map through upgrade list render and update
     Object.keys(this.state.upgradeList).map((upgrade) => {
       let thisupgrade = this.state.upgradeList[upgrade];
       this.updateEntity(thisupgrade, ctx);
-
       if (this.testCollisionEntity(this.state.player, thisupgrade)) {
         this.setState({
           score: this.state.score + 1000
         })
         delete this.state.upgradeList[upgrade]
-        // console.log("Player HP = " + this.state.hp)
       }
       return null;
     })
@@ -314,7 +300,6 @@ export default class Canvas extends Component {
           console.log(`You Lost, You Survived for ${Date.now() - this.state.timeWhenGameStarted} ms.`);
           this.startNewGame()
         }
-        console.log("Player HP = " + this.state.hp)
       }
       return null;
     })
@@ -339,7 +324,32 @@ export default class Canvas extends Component {
     this.randomlyGenerateEnemy();
     this.randomlyGenerateEnemy();
   }
+  // function to send to user highscore to the database
+  setHighscore2 = () => {
+    if (this.props.username) {
+      API.getUser(this.props.username)
+        .then(response => {
+          if (response.data.highScore2 < this.state.score) {
+            console.log(`response.data.highscore was higher than the state score ${response.data.highScore} < ${this.state.score}`)
+            API.updateUser(response.data.username, { highScore2: this.state.score })
+              .then(res => {
+              })
+          }
+        })
+    }
+    else {
+      API.getUser(this.state.username)
+        .then(response => {
+          if (response.data.highScore2 < this.state.score) {
+            API.updateUser(this.state.username, { highScore2: this.state.score })
+              .then(res => {
+              })
+          } else {
 
+          }
+        })
+    }
+  }
 
   render() {
     return (

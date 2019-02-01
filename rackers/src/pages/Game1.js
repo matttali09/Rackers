@@ -444,7 +444,6 @@ export default class Game1 extends Component {
   // function to send to user highscore to the database
   setHighscore = () => {
     if (this.props.username) {
-      // might use
       API.getUser(this.props.username)
         .then(response => {
           if (response.data.highScore < this.state.score) {
