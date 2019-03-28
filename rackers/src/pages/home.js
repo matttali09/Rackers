@@ -31,7 +31,7 @@ class Home extends Component {
           <div className="row">
             <Link to="/game1" className="active">
               <img
-                className="col s12 m4"
+                className="col s12 m4 game-img"
                 style={imageStyle}
                 src="./images/game1.png"
                 alt="Survival Mode!"
@@ -61,7 +61,7 @@ class Home extends Component {
           <div className="row">
             <Link to="/game2" className="active">
               <img
-                className="col s12 m4"
+                className="col s12 m4 game-img"
                 style={imageStyle}
                 src="./images/game2.gif"
                 alt="Collect the Dots"
@@ -86,7 +86,7 @@ class Home extends Component {
           <div className="row">
             <Link to="/game3" className="active">
               <img
-                className="col s12 m4"
+                className="col s12 m4 game-img"
                 style={imageStyle}
                 src="./images/game3.gif"
                 alt="Mine Dropper"

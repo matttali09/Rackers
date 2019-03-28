@@ -87,7 +87,7 @@ h6 {
   color: #ffafff;
   margin-bottom: 2%;
 }
-img {
+.game-img {
   border: 1px solid #ddd;
   border-radius: 4px;
   padding: 5px;
@@ -100,6 +100,14 @@ img:hover {
   color: ivory;
   margin-top: 0;
   margin-bottom: 10%;
+}
+.row .col.dead-link {
+  height: 30rem;
+  width: 42rem;
+  margin-top: 2rem;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
 }
 
 /* modal styling and table */

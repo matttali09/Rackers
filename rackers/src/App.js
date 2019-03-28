@@ -2,14 +2,15 @@ import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom'
 import API from "./utils/API";
 // components
-import Signup from './pages/sign-up'
-import LoginForm from './pages/login-form'
-import Home from './pages/home'
-import Game1 from './pages/Game1'
-import Game2 from './pages/Game2'
-import Game3 from './pages/Game3'
-import Navbar from './components/navbar'
-import Footer from './components/footer'
+import Signup from './pages/sign-up';
+import LoginForm from './pages/login-form';
+import Home from './pages/home';
+import Game1 from './pages/Game1';
+import Game2 from './pages/Game2';
+import Game3 from './pages/Game3';
+import Navbar from './components/navbar';
+import Footer from './components/footer';
+import NoMatch from './components/noMatch';
 
 class App extends Component {
   state = {
@@ -120,6 +121,7 @@ class App extends Component {
             username={this.state.username}
           />}
           />
+          <Route component={NoMatch} />
         </Switch>
         <Footer />
       </div>
@@ -129,18 +131,3 @@ class App extends Component {
 }
 
 export default App;
-// {this.state.loggedIn ? (
-//   <Switch>
-//     <Route exact path="/" component={Home}
-//     />
-//     <Route path="/game1" render={() => <Game1 />}
-//     />
-//   </Switch>
-//    ) : (
-// <Switch>
-//       <Route path="/signin" render={() => <LoginForm updateUser={this.updateUser} />}
-//     />
-//     <Route path="/signup" render={() => <Signup updateUser={this.updateUser}/>}
-//     />
-// </Switch>
-//    )}
