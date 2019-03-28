@@ -121,7 +121,7 @@ class App extends Component {
             username={this.state.username}
           />}
           />
-          <Route component={NoMatch} />
+          <Route href="/*" component={NoMatch} />
         </Switch>
         <Footer />
       </div>

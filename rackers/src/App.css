@@ -108,6 +108,7 @@ img:hover {
   margin-left: auto;
   margin-right: auto;
   display: block;
+  float: none;
 }
 
 /* modal styling and table */
