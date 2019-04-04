@@ -98,7 +98,6 @@ export default class Game1 extends Component {
       width: height,
       height: width,
       color: "black",
-
       timer: 0
     };
     this.setState(prevState => ({
@@ -250,11 +249,11 @@ export default class Game1 extends Component {
   }
   getKeyUp = (player) => {
     document.onkeyup = (event) => {
-      if (event.keyCode === 68)        //d
+      if (event.keyCode === 68)        // d
         player.pressingRight = false;
-      else if (event.keyCode === 83)   //s
+      else if (event.keyCode === 83)   // s
         player.pressingDown = false;
-      else if (event.keyCode === 65) //a
+      else if (event.keyCode === 65) // a
         player.pressingLeft = false;
       else if (event.keyCode === 87) // w
         player.pressingUp = false;
@@ -342,11 +341,11 @@ export default class Game1 extends Component {
     }
   }
 
+  // ====================== Main Update function ===============================
   // function on the interval loop that clears and then rerenders the canvas
   update = (ctx, player) => {
     this.setHighscore();
     ctx.clearRect(0, 0, this.state.canvasSize.canvasWidth, this.state.canvasSize.canvasHeight);
-    // console.log(`this.state.timestarted = ${Date.now() - this.state.timeWhenGameStarted}`)
 
     this.setState({
       frameCount: this.state.frameCount + 1,

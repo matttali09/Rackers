@@ -107,6 +107,36 @@ class Home extends Component {
             </div>
           </div>
         </div>
+        <div className="container mainContent">
+          <h6 className="game-header">Survival Mode!</h6>
+          <div className="row">
+            <Link to="/game4" className="active">
+              <img
+                className="col s12 m4 game-img"
+                style={imageStyle}
+                src="./images/game1.png"
+                alt="Survival Mode!"
+                href="/game4"
+              />
+            </Link>
+            <div className="col s12 m8">
+              <p className="game-description">
+              Click on the image to start the game! controls are WSAD for
+              movement. Left and/or right click mouse to fire bullets. pressing
+              "P" will pause the game. Collect purple upgrades to increase attack
+              speed, and orange to increase score by 1000!
+              Try to stay alive as long as possible!
+              It is the Current stage that I am in completing the first full game with images, 
+                stay tuned!
+              </p>
+              <Modal
+                header='Survival Mode LeaderBoard'
+                trigger={<Button className="leader-board waves-effect waves-effect-dark">Survival Mode LeaderBoard</Button>}>
+                <HighScoreTable />
+              </Modal>
+            </div>
+          </div>
+        </div>
       </center>
     );
 

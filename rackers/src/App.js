@@ -8,6 +8,7 @@ import Home from './pages/home';
 import Game1 from './pages/Game1';
 import Game2 from './pages/Game2';
 import Game3 from './pages/Game3';
+import Game4 from './pages/Game4';
 import Navbar from './components/navbar';
 import Footer from './components/footer';
 import NoMatch from './components/noMatch';
@@ -118,6 +119,10 @@ class App extends Component {
             pressingRight: false,
             aimAngle: 0,
           }}
+            username={this.state.username}
+          />}
+          />
+          <Route path="/game4" render={() => <Game4 
             username={this.state.username}
           />}
           />

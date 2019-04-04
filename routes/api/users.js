@@ -22,14 +22,14 @@ router.get('/current', (req, res, next) => {
     } else {
         res.json({ user: null })
     }
-})
+});
 
 // Matches with "/api/users/signup" send info, check database for valid unique user, send back userinfo to react app.js
 router.post('/signup', (usersController.create));
 
 
 // Matches with "api/users/signin" signin route
-router.post('/signin', passport.authenticate('local'), (usersController.signin))
+router.post('/signin', passport.authenticate('local'), (usersController.signin));
 
 // matches with "api/users/logout" used for current user only in session
 router.post('/logout', (req, res) => {
@@ -39,7 +39,7 @@ router.post('/logout', (req, res) => {
     } else {
         res.send({ msg: 'no user to log out' })
     }
-})
+});
 
 // Matches with "/api/users/:username"
 router.route("/:username")
